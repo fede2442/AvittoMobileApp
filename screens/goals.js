@@ -17,8 +17,8 @@ const Goals = ({ navigation }) => {
         <MainWindow backgroundImage={Images.rickBackground2}>
           <Text style={styles.flap}>Goals</Text>
         </MainWindow>
-        <MainButton navigation={navigation}/>
         <BottomMenu navigation={navigation} habits={habits}/>
+        <MainButton navigation={navigation}/>
       </View>
     </NavigationContainer>
   );
@@ -31,7 +31,9 @@ const styles = StyleSheet.create({
     backgroundColor: '#ddd',
     flexDirection: 'column', 
     alignItems: 'stretch',  
-    padding: 10, 
+    padding: 10,
+    backgroundColor:'#343635'
+
   },
   text: {
     fontSize: 20,

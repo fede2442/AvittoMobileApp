@@ -5,7 +5,7 @@ const MainWindow = (props) => {
     
     return(
         <View style={styles.mainWindow} >
-            <ImageBackground source={props.backgroundImage} style={styles.backgroundImage} >
+            <ImageBackground style={styles.backgroundImage} >
             <ScrollView>
                 { props.children }
             </ScrollView>
@@ -23,13 +23,14 @@ const styles = StyleSheet.create({
         marginVertical: 10,
         overflow: 'hidden',
         borderWidth: 1,
-        borderColor: '#bbb',
+        borderColor: '#99999A',
     },
     text: {
         fontSize: 20,
     },
     backgroundImage: {
         flex: 1,
+        backgroundColor:'#B6C0CE'
     }
 
 });

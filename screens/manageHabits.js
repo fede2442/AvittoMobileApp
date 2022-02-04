@@ -78,8 +78,8 @@ const ManageHabits = ({ navigation }) => {
             <Text style={styles.dummyText}> Add Habit</Text>
             </View>
         </MainWindow>
-        <MainButton navigation={navigation}/>
         <BottomMenu navigation={navigation} habits={habits}/>
+        <MainButton navigation={navigation}/>
       </View>
     </NavigationContainer>
   );
@@ -93,7 +93,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#ddd',
     flexDirection: 'column', 
     alignItems: 'stretch',  
-    padding: 10, 
+    padding: 10,
+    backgroundColor:'#343635'
   },
   text: {
     padding: 20,

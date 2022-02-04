@@ -21,17 +21,18 @@ const Home = ({ navigation }) => {
   return (
     <NavigationContainer>
       <View style={styles.container}>
-        <MainWindow backgroundImage={Images.rickBackground}>
+        <MainWindow>
           <FlatList 
                       data={habits.habitos}
                       numColumns={3}
                       renderItem={({item}) => ( 
                         <Habit habit={item}/>
                       )}
+                      style={{padding:10}}
                       />
         </MainWindow>
-        <MainButton navigation={navigation}/>
         <BottomMenu navigation={navigation} habits={habits.habitos}/>
+        <MainButton navigation={navigation}/>
       </View>
     </NavigationContainer>
   );
@@ -41,10 +42,10 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    backgroundColor: '#ddd',
-    flexDirection: 'column', 
+    flexDirection: 'column',
     alignItems: 'stretch',  
-    padding: 10, 
+    padding: 10,
+    backgroundColor:'#343635'
   },
   text: {
     fontSize: 20,

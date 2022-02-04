@@ -19,6 +19,8 @@ const Images = {
     tecladoIcon: require('../Icons/teclado.png'),
     cuentasIcon: require('../Icons/cuentas.png'),
     estudiarIcon: require('../Icons/estudiar.png'),
+    fondoAzul: require('../Icons/fondo azul.png'),
+
 
 };
 

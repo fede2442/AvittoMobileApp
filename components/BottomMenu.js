@@ -24,6 +24,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-around',
         flexDirection: 'row', 
         paddingBottom: 15,
+        backgroundColor:'#343635'
       },
       Invisibletext: {
         opacity: 0,

@@ -7,7 +7,6 @@ const ConfirmDeleteHabit = () => {
 
     return(
         <Modal visible={false}>
-            <Text>HOLAAA</Text>
         </Modal>
     );
 };

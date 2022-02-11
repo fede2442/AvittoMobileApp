@@ -8,7 +8,7 @@ const MainButton = ({ onPress }) => {
     return(
         <TouchableOpacity style={styles.frontFloating} onPress={() => onPress(true)} activeOpacity={0.7} >
             <View style={styles.mainButton}>
-                <Icon.Plus stroke="black" width={85} height={80} />
+                <Icon.Plus stroke="black" width={85} height={80} strokeWidth={1.2}/>
             </View>
         </TouchableOpacity>
     );

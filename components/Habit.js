@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import {View, StyleSheet, Image, Text, Pressable} from 'react-native';
-import Images from './Images';
+import icons from './Images';
+import * as Icon from "react-native-feather";
 
 const Habit = ({habit}) => {
     
@@ -13,11 +14,10 @@ const Habit = ({habit}) => {
                     console.log(buttonPresses);}}
                 onLongPress={() => {
                     setButtonPresses(0);
-                    console.log("Volvemos al inicio")
                 }} 
           >
         <View style={[styles.habitCirle, {backgroundColor: buttonPresses > 0 ? 'lightgreen' : '#eee'}]}>
-            <Image source={habit.habitIcon} style={styles.habitIcon} resizeMode='contain'/>
+            {icons(habit.habitIcon) }
         </View>
         <Text style={styles.habitDesc}>{habit.name}</Text>
         </Pressable>
@@ -39,6 +39,8 @@ const styles = StyleSheet.create({
         marginHorizontal: 7,
         borderWidth: 1,
         overflow: 'hidden',
+        alignItems: 'center',
+        justifyContent:'center'
     },
     habitDesc: {
         backgroundColor:'#eeee', 

@@ -1,8 +1,14 @@
 import React from 'react';
 import {StyleSheet, Image , View, Modal, Text, TextInput, Button } from 'react-native';
 import {Formik} from 'formik';
+import { agregar_habito_action } from '../redux/reducers/notesApp';
+import { useDispatch, useSelector } from 'react-redux';
 
-export default function AddHabitForm() {
+
+
+const AddHabitForm = ({ close }) => {
+    const dispatch = useDispatch();
+    const agregar_habito = (nombre,icon) => dispatch(agregar_habito_action(nombre,icon));
 
     const styles = StyleSheet.create({
         textInput: {
@@ -20,7 +26,10 @@ export default function AddHabitForm() {
             <Formik
                 initialValues={{ nombre: '', icono: '', dias: ''}}
                 onSubmit={(values) => {
-                    console.log(values)
+                    agregar_habito(values.nombre,values.icono);
+                    console.log(values);
+                    close(false);
+                    alert('Habito agregado')
                 }}
             >
             {(props) => (
@@ -52,3 +61,5 @@ export default function AddHabitForm() {
     )
 
 }
+
+export default AddHabitForm;

@@ -66,17 +66,6 @@ const ManageHabits = ({ navigation }) => {
                       )}
             />
             <Text style={styles.flap}>Add a new habit</Text>
-            <View style={styles.formContainer}>
-            <Text style={styles.dummyText}> Add Habit</Text>
-            <Text style={styles.dummyText}> Add Habit</Text>
-            <Text style={styles.dummyText}> Add Habit</Text>
-            </View>
-            <View style={styles.formContainer}>
-            <Text style={styles.dummyText}> Add Habit</Text>
-            <Text style={styles.dummyText}> Add Habit</Text>
-            <Text style={styles.dummyText}> Add Habit</Text>
-            <Text style={styles.dummyText}> Add Habit</Text>
-            </View>
         </MainWindow>
         <BottomMenu navigation={navigation} habits={habits}/>
         <MainButton navigation={navigation}/>

@@ -3,7 +3,7 @@ import {StyleSheet, Image , View, Modal, Text, TextInput, Button } from 'react-n
 import {Formik} from 'formik';
 import { agregar_habito_action } from '../redux/reducers/notesApp';
 import { useDispatch, useSelector } from 'react-redux';
-
+import realm from '../realm/realm';
 
 
 const AddHabitForm = ({ close }) => {
@@ -28,8 +28,19 @@ const AddHabitForm = ({ close }) => {
                 onSubmit={(values) => {
                     agregar_habito(values.nombre,values.icono);
                     console.log(values);
+                    realm.write(() => {
+                        realm.create("Habit", {
+                        name: values.nombre,
+                        last_mod: Date.now(),
+                        strikeCount: 0,
+                        strikeHistoricMax: 0,
+                        habitIcon: values.icono
+                    }, );
+                    });
+
+                    alert('Habito agregado');
+
                     close(false);
-                    alert('Habito agregado')
                 }}
             >
             {(props) => (

@@ -11,7 +11,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import contarMas from '../redux/reducers/notesApp';
 import * as Icon from "react-native-feather";
 import AddHabitForm from '../components/AddHabitForm';
-//import { IoReceipt } from 'react-native-vector-icons/Ionicons';
 
 const Home = ({ navigation }) => {
 

@@ -11,6 +11,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import contarMas from '../redux/reducers/notesApp';
 import * as Icon from "react-native-feather";
 import AddHabitForm from '../components/AddHabitForm';
+import realm from '../realm/realm';
 
 const Home = ({ navigation }) => {
 
@@ -21,9 +22,11 @@ const Home = ({ navigation }) => {
   const dispatch = useDispatch();
   const contar_mas = () => dispatch(contarMas());
 
-    const setModal = bool => {
-        setModalOpen(bool);
-      };
+  const setModal = bool => {
+      setModalOpen(bool);
+  };
+
+  const habitos = realm.objects("Habit");
 
   return (
     <NavigationContainer>
@@ -40,7 +43,7 @@ const Home = ({ navigation }) => {
       <View style={styles.container}>
         <MainWindow>
           <FlatList 
-                      data={habits.habitos}
+                      data={habitos}
                       numColumns={3}
                       renderItem={({item}) => ( 
                         <Habit habit={item}/>

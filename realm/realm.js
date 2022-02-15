@@ -6,7 +6,7 @@ Habit.schema = {
     properties: {
         name: "string",
         uid: "string?",
-        //last_mod: "date",
+        last_mod: "date",
         strikeCount: "int",
         strikeHistoricMax: "int",
         habitIcon: "string",

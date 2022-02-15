@@ -1,6 +1,6 @@
 import React from 'react';
 import {StyleSheet, Image , View, Modal, Text, TextInput, Button } from 'react-native';
-import {Formik} from 'formik';
+import {Formik, Form, Field} from 'formik';
 import { agregar_habito_action } from '../redux/reducers/notesApp';
 import { useDispatch, useSelector } from 'react-redux';
 import realm from '../realm/realm';
@@ -31,7 +31,7 @@ const AddHabitForm = ({ close }) => {
                     realm.write(() => {
                         realm.create("Habit", {
                         name: values.nombre,
-                        last_mod: Date.now(),
+                        last_mod: new Date(),
                         strikeCount: 0,
                         strikeHistoricMax: 0,
                         habitIcon: values.icono
@@ -56,8 +56,10 @@ const AddHabitForm = ({ close }) => {
                         placeholder='Elegir Icono'
                         onChangeText={props.handleChange('icono')}
                         value={props.values.icono}
-                        keyboardType='numeric'
+                        //keyboardType='numeric'
                     />
+                    
+
                     <TextInput
                         style={styles.textInput}
                         placeholder='Dias'

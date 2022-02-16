@@ -1,23 +1,33 @@
 import 'react-native-gesture-handler';
 import React  from 'react';
-import {View, StyleSheet, Text} from 'react-native';
+import {View, StyleSheet, Text, FlatList} from 'react-native';
 import MainButton from '../components/MainButton';
 import BottomMenu from '../components/BottomMenu';
 import MainWindow from '../components/MainWindow';
 import { NavigationContainer } from '@react-navigation/native';
-import Images from '../components/Images';
+import icons from '../components/Images';
+import realm from '../realm/realm';
+import GoalCard from '../components/GoalCard';
 
 const Goals = ({ navigation }) => {
 
-  const habits = navigation.getParam('habits');
+  const habitos = realm.objects("Habit");
 
   return (
     <NavigationContainer>
         <View style={styles.container}>
-        <MainWindow backgroundImage={Images.rickBackground2}>
+        <MainWindow >
           <Text style={styles.flap}>Goals</Text>
+          <FlatList 
+                      data={habitos}
+                      numColumns={1}
+                      renderItem={({item}) => ( 
+                        <GoalCard habit={item}/>
+                      )}
+                      style={{padding:10}}
+                      />
         </MainWindow>
-        <BottomMenu navigation={navigation} habits={habits}/>
+        <BottomMenu navigation={navigation}/>
         <MainButton navigation={navigation}/>
       </View>
     </NavigationContainer>

@@ -51,7 +51,7 @@ const Home = ({ navigation }) => {
                       style={{padding:10}}
                       />
         </MainWindow>
-        <BottomMenu navigation={navigation} habits={habits.habitos} />
+        <BottomMenu navigation={navigation} />
         <MainButton navigation={navigation} onPress={setModal}/>
       </View>
     </NavigationContainer>

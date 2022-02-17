@@ -1,10 +1,10 @@
 import React from 'react';
-import {StyleSheet, Image , View, Modal, Text, TextInput, Button } from 'react-native';
-import {Formik, Form, Field} from 'formik';
+import {StyleSheet, Image , View, Modal, Text, TextInput, Button, CheckBox } from 'react-native';
+import {Formik, Form, Field, Option} from 'formik';
 import { agregar_habito_action } from '../redux/reducers/notesApp';
 import { useDispatch, useSelector } from 'react-redux';
 import realm from '../realm/realm';
-
+import DiaCheckbox from './DiaCheckbox';
 
 const AddHabitForm = ({ close }) => {
     const dispatch = useDispatch();
@@ -21,10 +21,12 @@ const AddHabitForm = ({ close }) => {
         }
     })
 
+    const dias =  ['lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado', 'domingo'];
+    
     return (
         <View>
             <Formik
-                initialValues={{ nombre: '', icono: '', dias: ''}}
+                initialValues={{ nombre: '', icono: '', dias: {lunes: false, martes: false, miercoles: false, jueves: false, viernes: false, sabado: false, domingo: false} }}
                 onSubmit={(values) => {
                     agregar_habito(values.nombre,values.icono);
                     console.log(values);
@@ -34,12 +36,11 @@ const AddHabitForm = ({ close }) => {
                         last_mod: new Date(),
                         strikeCount: 0,
                         strikeHistoricMax: 0,
-                        habitIcon: values.icono
+                        habitIcon: values.icono,
                     }, );
                     });
-
                     alert('Habito agregado');
-
+                    console.log(values)
                     close(false);
                 }}
             >
@@ -51,6 +52,7 @@ const AddHabitForm = ({ close }) => {
                         onChangeText={props.handleChange('nombre')}
                         value={props.values.nombre}
                     />
+
                     <TextInput
                         style={styles.textInput}
                         placeholder='Elegir Icono'
@@ -59,13 +61,10 @@ const AddHabitForm = ({ close }) => {
                         //keyboardType='numeric'
                     />
                     
-
-                    <TextInput
-                        style={styles.textInput}
-                        placeholder='Dias'
-                        onChangeText={props.handleChange('dias')}
-                        value={props.values.dias}
-                    />
+                    {dias.map(el => {
+                        return <DiaCheckbox element={el} formikProps={props}/>
+                    })}
+                        
                     <Button title='submit' onPress={props.handleSubmit}/>
                 </View>
             )}

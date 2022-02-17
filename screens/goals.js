@@ -1,7 +1,7 @@
 import 'react-native-gesture-handler';
 import React  from 'react';
 import {View, StyleSheet, Text, FlatList} from 'react-native';
-import MainButton from '../components/MainButton';
+import MainButtonHome from '../components/MainButtonHome';
 import BottomMenu from '../components/BottomMenu';
 import MainWindow from '../components/MainWindow';
 import { NavigationContainer } from '@react-navigation/native';
@@ -12,6 +12,8 @@ import GoalCard from '../components/GoalCard';
 const Goals = ({ navigation }) => {
 
   const habitos = realm.objects("Habit");
+  
+  let habitos2 = habitos.sorted( 'strikeCount' , true);
 
   return (
     <NavigationContainer>
@@ -19,7 +21,7 @@ const Goals = ({ navigation }) => {
         <MainWindow >
           <Text style={styles.flap}>Goals</Text>
           <FlatList 
-                      data={habitos}
+                      data={habitos2}
                       numColumns={1}
                       renderItem={({item}) => ( 
                         <GoalCard habit={item}/>
@@ -28,11 +30,13 @@ const Goals = ({ navigation }) => {
                       />
         </MainWindow>
         <BottomMenu navigation={navigation}/>
-        <MainButton navigation={navigation}/>
+        <MainButtonHome navigation={navigation}/>
       </View>
     </NavigationContainer>
   );
 };
+
+
 
 const styles = StyleSheet.create({
   container: {

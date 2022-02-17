@@ -26,7 +26,7 @@ const Home = ({ navigation }) => {
       setModalOpen(bool);
   };
 
-  const habitos = realm.objects("Habit");
+  const habitos = realm.objects("Habit");  
 
   return (
     <NavigationContainer>

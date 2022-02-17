@@ -7,11 +7,13 @@ const BottomMenu = ({ navigation , habits}) => {
     return(
         <View style={styles.menuBar}>
             <TouchableOpacity onPress={() => navigation.navigate('ManageHabits')}  activeOpacity={0.7}>
-            <Icon.Settings stroke="black" width={60} height={60} strokeWidth={1.2}/>
+              <Icon.Settings stroke="black" width={60} height={60} strokeWidth={1.2}/>
             </TouchableOpacity>
             <Text style={styles.Invisibletext}/>
             <TouchableOpacity onPress={() => navigation.navigate('Goals') } activeOpacity={0.7}>
-            <Icon.Award stroke="black" width={60} height={60} strokeWidth={1.2}/>
+              <View style={{backgroundColor:'red', borderWidth:5,borderRadius:10}}>
+              <Icon.Award  color="white" stroke="black" width={60} height={60} strokeWidth={1.2}/>
+              </View>
             </TouchableOpacity>
         </View>
     );

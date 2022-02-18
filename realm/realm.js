@@ -10,6 +10,7 @@ Habit.schema = {
         strikeCount: "int",
         strikeHistoricMax: "int",
         habitIcon: "string",
+        dias: "{}"
     },
     primaryKey: "name",
 };

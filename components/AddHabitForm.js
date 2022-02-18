@@ -20,16 +20,14 @@ const AddHabitForm = ({ close }) => {
             margin:5,
         }
     })
-
-    const dias =  ['lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado', 'domingo'];
     
+    const dias =  ['lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado', 'domingo'];
+
     return (
         <View>
             <Formik
                 initialValues={{ nombre: '', icono: '', dias: {lunes: false, martes: false, miercoles: false, jueves: false, viernes: false, sabado: false, domingo: false} }}
                 onSubmit={(values) => {
-                    agregar_habito(values.nombre,values.icono);
-                    console.log(values);
                     realm.write(() => {
                         realm.create("Habit", {
                         name: values.nombre,
@@ -37,10 +35,11 @@ const AddHabitForm = ({ close }) => {
                         strikeCount: 0,
                         strikeHistoricMax: 0,
                         habitIcon: values.icono,
+                        dias: values.dias
                     }, );
                     });
+
                     alert('Habito agregado');
-                    console.log(values)
                     close(false);
                 }}
             >

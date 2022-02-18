@@ -1,5 +1,6 @@
 import { View, Text, CheckBox } from 'react-native'
 import React from 'react'
+import dias from '../utils/dias';
 
 const DiaCheckbox = ({element, formikProps}) => {
   return (

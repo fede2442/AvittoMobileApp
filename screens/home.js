@@ -12,21 +12,40 @@ import contarMas from '../redux/reducers/notesApp';
 import * as Icon from "react-native-feather";
 import AddHabitForm from '../components/AddHabitForm';
 import realm from '../realm/realm';
+import dias from '../utils/dias';
+
 
 const Home = ({ navigation }) => {
 
 
   const [modalOpen, setModalOpen] = useState(false);
-  const habits = useSelector(state => state);
-
-  const dispatch = useDispatch();
-  const contar_mas = () => dispatch(contarMas());
+  
+  
+  //const habits = useSelector(state => state);
+  //const dispatch = useDispatch();
+  //const contar_mas = () => dispatch(contarMas());
 
   const setModal = bool => {
       setModalOpen(bool);
   };
 
-  const habitos = realm.objects("Habit");  
+  const habitos = realm.objects("Habit");
+  console.log(habitos);
+
+  var actual_day = new Date()
+  const dia_num = actual_day.getDay();
+  const dia_str = dias[dia_num-1];
+  console.log(dia_str +" --- "+dia_num+ habitos[0].dias[3]);
+
+
+  //console.log(Object.entries(habitos[0].dias))
+
+  //console.log(habitos.filter((x) => x.dias.lunes == true))
+
+  //console.log(habitos.filtered(`dias[${dia_num-1}] == true`));
+
+
+
 
   return (
     <NavigationContainer>
@@ -39,7 +58,7 @@ const Home = ({ navigation }) => {
               <AddHabitForm close={setModal}/>
           </View>
       </Modal>
-
+      
       <View style={styles.container}>
         <MainWindow>
           <FlatList 

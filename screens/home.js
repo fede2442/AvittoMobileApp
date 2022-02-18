@@ -30,21 +30,26 @@ const Home = ({ navigation }) => {
   };
 
   const habitos = realm.objects("Habit");
-  console.log(habitos);
 
-  var actual_day = new Date()
-  const dia_num = actual_day.getDay();
-  const dia_str = dias[dia_num-1];
-  console.log(dia_str +" --- "+dia_num+ habitos[0].dias[3]);
-
-
-  //console.log(Object.entries(habitos[0].dias))
-
-  //console.log(habitos.filter((x) => x.dias.lunes == true))
-
-  //console.log(habitos.filtered(`dias[${dia_num-1}] == true`));
-
-
+  function fede() {
+    console.log(habitos);
+  
+    var actual_day = new Date()
+    const dia_num = actual_day.getDay();
+    const dia_str = dias[dia_num-1];
+  
+    console.log(dia_str +" --- "+dia_num+ habitos[0].dias.lunes);
+  
+  
+    //console.log(Object.entries(habitos[0].dias))
+  
+    //console.log(habitos.filter((x) => x.dias.lunes == true))
+  
+   //console.log(habitos.filtered(`dias.${dia_str} = true`));
+  
+  
+  
+  }
 
 
   return (
@@ -60,6 +65,7 @@ const Home = ({ navigation }) => {
       </Modal>
       
       <View style={styles.container}>
+      <TouchableOpacity onPress={() => fede()} style={{width:100,height:100,backgroundColor:"red"}}></TouchableOpacity>
         <MainWindow>
           <FlatList 
                       data={habitos}
@@ -69,6 +75,7 @@ const Home = ({ navigation }) => {
                       )}
                       style={{padding:10}}
                       />
+                      
         </MainWindow>
         <BottomMenu navigation={navigation} />
         <MainButton navigation={navigation} onPress={setModal}/>

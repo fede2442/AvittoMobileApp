@@ -1,3 +1,5 @@
+
+//Take 2 dates and compare them
 export default function sameDay(d1, d2) {
     return d1.getFullYear() === d2.getFullYear() &&
       d1.getMonth() === d2.getMonth() &&

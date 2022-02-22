@@ -29,23 +29,12 @@ const Home = ({ navigation }) => {
       setModalOpen(bool);
   };
 
-  const habitos = realm.objects("Habit");
-  console.log(habitos);
-
+  
   var actual_day = new Date()
-  const dia_num = actual_day.getDay();
-  const dia_str = dias[dia_num-1];
-  console.log(dia_str +" --- "+dia_num+ habitos[0].dias[3]);
+  const dia_num = actual_day.getDay() === 0 ? 6 : actual_day.getDay()-1; //1er dia de la semana en java es domingo
+  const dia_str = dias[dia_num];
 
-
-  //console.log(Object.entries(habitos[0].dias))
-
-  //console.log(habitos.filter((x) => x.dias.lunes == true))
-
-  //console.log(habitos.filtered(`dias[${dia_num-1}] == true`));
-
-
-
+  const habitos = realm.objects("Habit").filtered(`dias["${dia_str}"] == true`);
 
   return (
     <NavigationContainer>

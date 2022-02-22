@@ -2,22 +2,13 @@ import Images from '../../components/Images';
 
 export const CONTAR = 'CONTAR';
 export const QUITAR_HABITO = 'QUITAR_HABITO';
+export const AGREGAR_HABITO = 'AGREGAR_HABITO';
 
 export const habitos = {
     habitos: [  
-                {name: 'Caminar', key: '1', habitIcon:  Images.rocketIcon},
-                {name: 'GYM', key: '4', habitIcon:  Images.scopeIcon},
-                {name: 'No Fumar', key: '2', habitIcon:  Images.codingIcon},
-                {name: 'Correr', key: '3', habitIcon:  Images.starIcon},
-                {name: 'Pastillas', key: '5', habitIcon:  Images.codingIcon},
-                {name: 'Remedio', key: '6', habitIcon:  Images.rocketIcon},
-                {name: '5 Vasos', key: '7', habitIcon:  Images.scopeIcon},
-                {name: 'Cumpli Dieta', key: '8', habitIcon:  Images.starIcon},
-                {name: 'Lavar Platos', key: '9', habitIcon:  Images.uxIcon},
-                {name: 'Escribir', key: '10', habitIcon:  Images.tecladoIcon},
-                {name: 'Estudiar 10"', key: '8', habitIcon:  Images.estudiarIcon},
-                {name: 'Pagar Cuentas', key: '10', habitIcon:  Images.cuentasIcon},
-                {name: 'Sacar Perro', key: '9', habitIcon:  Images.uxIcon},
+                {name: 'Caminar', key: '1', habitIcon:  'user'},
+                {name: 'Leer', key: '4', habitIcon:  'book'},
+                {name: '1 Story', key: '2', habitIcon:  'instagram'},
               ],
     contador: 0,
 };
@@ -36,6 +27,15 @@ export const quitar_habito_action = (id_habito) => {
   }
 };
 
+var id = 4;
+
+export const agregar_habito_action = (name, habitIcon) => {
+  id = id + 1;
+  return {
+    type: AGREGAR_HABITO,
+    payload: {name: name, id: id,habitIcon:  habitIcon}
+  }
+};
 
 
 export default function contador_reducer(state=habitos, action){
@@ -48,11 +48,21 @@ export default function contador_reducer(state=habitos, action){
     }
       case QUITAR_HABITO: {
         console.log('AAAAAAAAAAAAAAAAAAA');
+        console.log(habito);
+
         return {
           ...state,
           habitos: state.habitos.filter((habito) => habito.key !== action.payload),
         }
      }
+     case AGREGAR_HABITO: {
+      console.log('agregado' + action.payload.id   );
+      habitos.habitos.push(action.payload);
+      return {
+        ...state,
+        habitos: habitos.habitos,
+      }
+    }
       default: return state; 
     } 
 } 

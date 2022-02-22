@@ -1,26 +1,60 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {View, StyleSheet, Image, Text, Pressable} from 'react-native';
-import Images from './Images';
+import icons from './Images';
+import * as Icon from "react-native-feather";
+import realm from '../realm/realm';
+import sameDay from '../utils/sameDay';
 
 const Habit = ({habit}) => {
     
     const [buttonPresses, setButtonPresses] = useState(0);
+    
+   
+
+      useEffect(() => {
+        sameDay(habit.last_mod,new Date()) && (habito.strikeCount != 0) ? setButtonPresses(buttonPresses + 1) : setButtonPresses(0);
+    }, []);
+
+      const habitos = realm.objects("Habit");
+      const habito = habitos.filtered("name == '"+habit.name+"'")[0];
 
     return(
+
         <Pressable 
                 onPress={() => {
-                    setButtonPresses(buttonPresses + 1);
-                    console.log(buttonPresses);}}
+                   
+                    if(buttonPresses == 0){
+                        realm.write(() => {
+                            habito.last_mod = new Date();
+                            habito.strikeCount = habito.strikeCount + 1;
+                            if(habito.strikeCount > habito.strikeHistoricMax){
+                                habito.strikeHistoricMax = habito.strikeCount;
+                            }
+                        }); 
+                        setButtonPresses(buttonPresses + 1);
+                    }
+                    console.log(habito);
+                    }}
                 onLongPress={() => {
-                    setButtonPresses(0);
-                    console.log("Volvemos al inicio")
+                    if(buttonPresses > 0){
+                        var d = new Date();
+                        d.setDate(d.getDate()-1);
+                        realm.write(() => {
+                            habito.last_mod =  d; //set yesterdays date
+                            habito.strikeCount = habito.strikeCount == 0 ? 0 : habito.strikeCount - 1;
+                            habito.strikeHistoricMax = habito.strikeHistoricMax == 0 ? 0 : habito.strikeHistoricMax - 1;
+                        });
+                        console.log(habito);
+                        setButtonPresses(0);
+                    }
                 }} 
           >
         <View style={[styles.habitCirle, {backgroundColor: buttonPresses > 0 ? 'lightgreen' : '#eee'}]}>
-            <Image source={habit.habitIcon} style={styles.habitIcon} resizeMode='contain'/>
+            {icons(habit.habitIcon) }
         </View>
         <Text style={styles.habitDesc}>{habit.name}</Text>
         </Pressable>
+
     );
 };
 
@@ -39,6 +73,8 @@ const styles = StyleSheet.create({
         marginHorizontal: 7,
         borderWidth: 1,
         overflow: 'hidden',
+        alignItems: 'center',
+        justifyContent:'center'
     },
     habitDesc: {
         backgroundColor:'#eeee', 

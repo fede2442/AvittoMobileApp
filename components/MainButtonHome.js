@@ -3,12 +3,12 @@ import {StyleSheet, Image, TouchableOpacity, View } from 'react-native';
 import Images from './Images'
 import * as Icon from "react-native-feather"
 
-const MainButton = ({ onPress }) => {
+const MainButtonHome = ({ navigation }) => {
 
     return(
-        <TouchableOpacity style={styles.frontFloating} onPress={() => onPress(true)} activeOpacity={0.7} >
+        <TouchableOpacity style={styles.frontFloating}  onPress={() => navigation.navigate('Home')} activeOpacity={0.7} >
             <View style={styles.mainButton}>
-                <Icon.Plus stroke="black" width={55} height={55} strokeWidth={1.2} style={{alignSelf:'center'}}/>
+                <Icon.Home stroke="black" width={50} height={50} strokeWidth={1.2} style={{alignSelf:'center'}}/>
             </View>
         </TouchableOpacity>
     );
@@ -16,7 +16,8 @@ const MainButton = ({ onPress }) => {
 
 const styles = StyleSheet.create({
     mainButton: {
-        alignContent:'center'
+        alignContent:'center',
+        justifyContent:'center',
       },
     frontFloating: {
         position: 'absolute',
@@ -27,10 +28,10 @@ const styles = StyleSheet.create({
         backgroundColor:'#6A9196',
         borderRadius: 90/2,
         width: 90,
-        height: 90,// TODO: decidir como estilizar el boton
-//        borderColor: 'black',
-  //      borderWidth: 2
+        height: 90,
+        borderColor: 'black',
+        borderWidth: 2
     },
 });
 
-export default MainButton;
+export default MainButtonHome;

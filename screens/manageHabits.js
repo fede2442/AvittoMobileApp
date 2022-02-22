@@ -1,7 +1,7 @@
 import 'react-native-gesture-handler';
 import React , { useState }from 'react';
 import {View, StyleSheet, Text, FlatList, ImageBackground, Pressable, Modal, Button} from 'react-native';
-import MainButton from '../components/MainButton';
+import MainButtonHome from '../components/MainButtonHome';
 import BottomMenu from '../components/BottomMenu';
 import MainWindow from '../components/MainWindow';
 import { NavigationContainer } from '@react-navigation/native';
@@ -43,7 +43,7 @@ const ManageHabits = ({ navigation }) => {
           <Text style={styles.flap}>Your Habits</Text>
             <FlatList 
                       data={habits.habitos}
-                      numColumns={3}
+                      numColumns={1}
                       renderItem={({item}) => ( 
                         <Pressable 
                         onPress={() => {
@@ -55,31 +55,14 @@ const ManageHabits = ({ navigation }) => {
                             console.log("agregado item: ", item);
                         }} 
                         >
-                        <View style={styles.habitWrapper}>
-                          <ImageBackground source={Images.cruz} style={styles.cruz}  imageStyle={{opacity: 0.2}}>
-                            <ImageBackground source={item.habitIcon} style={styles.backgroundImage} resizeMode='center' imageStyle={{opacity: 0.1}}>
-                              <Text adjustsFontSizeToFit style={styles.text}>{item.name}</Text>
-                            </ImageBackground>
-                          </ImageBackground>
-                        </View>
+                        <Text adjustsFontSizeToFit style={styles.text}>{item.name}</Text>
                         </Pressable>
                       )}
             />
             <Text style={styles.flap}>Add a new habit</Text>
-            <View style={styles.formContainer}>
-            <Text style={styles.dummyText}> Add Habit</Text>
-            <Text style={styles.dummyText}> Add Habit</Text>
-            <Text style={styles.dummyText}> Add Habit</Text>
-            </View>
-            <View style={styles.formContainer}>
-            <Text style={styles.dummyText}> Add Habit</Text>
-            <Text style={styles.dummyText}> Add Habit</Text>
-            <Text style={styles.dummyText}> Add Habit</Text>
-            <Text style={styles.dummyText}> Add Habit</Text>
-            </View>
         </MainWindow>
         <BottomMenu navigation={navigation} habits={habits}/>
-        <MainButton navigation={navigation}/>
+        <MainButtonHome navigation={navigation}/>
       </View>
     </NavigationContainer>
   );

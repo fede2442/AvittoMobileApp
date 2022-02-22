@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
   },
   flap: {
     padding: 30, 
-    backgroundColor: '#292B8B', 
+    backgroundColor: '#1899A0', 
     marginTop: 20, 
     width: '50%', 
     borderTopLeftRadius: 40, 

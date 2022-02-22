@@ -1,11 +1,10 @@
 import 'react-native-gesture-handler';
 import React, {useState} from 'react';
-import {View, StyleSheet, FlatList, Button, Text, Modal, TouchableOpacity } from 'react-native';
+import {View, StyleSheet, FlatList, Text, Modal } from 'react-native';
 import MainButton from '../components/MainButton';
 import BottomMenu from '../components/BottomMenu';
 import MainWindow from '../components/MainWindow';
 import { NavigationContainer } from '@react-navigation/native';
-import Images from '../components/Images';
 import Habit from '../components/Habit';
 import { useDispatch, useSelector } from 'react-redux';
 import contarMas from '../redux/reducers/notesApp';
@@ -29,7 +28,6 @@ const Home = ({ navigation }) => {
       setModalOpen(bool);
   };
 
-  
   var actual_day = new Date()
   const dia_num = actual_day.getDay() === 0 ? 6 : actual_day.getDay()-1; //1er dia de la semana en java es domingo
   const dia_str = dias[dia_num];
@@ -49,6 +47,7 @@ const Home = ({ navigation }) => {
       </Modal>
       
       <View style={styles.container}>
+      <Text style={styles.textoTop}>{dia_str.charAt(0).toUpperCase() + dia_str.slice(1)}, {actual_day.toLocaleDateString()}</Text>
         <MainWindow>
           <FlatList 
                       data={habitos}
@@ -60,7 +59,7 @@ const Home = ({ navigation }) => {
                       />
         </MainWindow>
         <BottomMenu navigation={navigation} />
-        <MainButton navigation={navigation} onPress={setModal}/>
+        <MainButton navigation={navigation} onPress={setModalOpen}/>
       </View>
     </NavigationContainer>
   );
@@ -100,6 +99,15 @@ const styles = StyleSheet.create({
         fontSize:20,
         marginLeft:'25%',
         marginBottom:10
+      },
+      textoTop:{
+       alignSelf:'center',
+       fontFamily: 'notoserif',
+       fontSize: 25,
+       fontWeight: 'bold',
+       color:'#EEE5E9' 
+      
+
       }
 });
 

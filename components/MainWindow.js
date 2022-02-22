@@ -22,15 +22,15 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         marginVertical: 10,
         overflow: 'hidden',
-        borderWidth: 1,
-        borderColor: '#99999A',
+        borderWidth: 0.5,
+        borderColor: '#383D3B',
     },
     text: {
         fontSize: 20,
     },
     backgroundImage: {
         flex: 1,
-        backgroundColor:'#B6C0CE'
+        backgroundColor:'#EEE5E9'
     }
 
 });

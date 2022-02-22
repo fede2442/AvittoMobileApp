@@ -1,5 +1,5 @@
 import 'react-native-gesture-handler';
-import React , { useState }from 'react';
+import React , { useState, useEffect }from 'react';
 import {View, StyleSheet, Text, FlatList, ImageBackground, Pressable, Modal, Button} from 'react-native';
 import MainButtonHome from '../components/MainButtonHome';
 import BottomMenu from '../components/BottomMenu';
@@ -8,7 +8,6 @@ import { NavigationContainer } from '@react-navigation/native';
 import Images from '../components/Images';
 import { useDispatch, useSelector } from 'react-redux';
 import { quitar_habito_action } from '../redux/reducers/notesApp';
-import { MaterialIcons } from 'react-native-vector-icons';
 
 const ManageHabits = ({ navigation }) => {
 
@@ -19,6 +18,18 @@ const ManageHabits = ({ navigation }) => {
   
   const [modalOpen, setModalOpen] = useState(false);
   const [habitToDelete, setHabit] = useState("0");
+  const [lifestyleList, setLifestyle] = useState([]);
+
+
+  useEffect(() => {
+    fetch('http://192.168.0.61:3000/hola')
+    .then((response) => response.json())
+    .then(data => setLifestyle(data)).catch((error)=>{
+      console.log("Api call error");
+      alert(error.message);
+    });
+    console.log(lifestyleList)
+  }, []);
 
   return (
       <NavigationContainer>
@@ -43,7 +54,7 @@ const ManageHabits = ({ navigation }) => {
           <Text style={styles.flap}>Your Habits</Text>
             <FlatList 
                       data={habits.habitos}
-                      numColumns={1}
+                      numColumns={2}
                       renderItem={({item}) => ( 
                         <Pressable 
                         onPress={() => {
@@ -59,7 +70,41 @@ const ManageHabits = ({ navigation }) => {
                         </Pressable>
                       )}
             />
-            <Text style={styles.flap}>Add a new habit</Text>
+            <Text style={styles.flap}>Add a LifeStyle</Text>
+            <FlatList 
+                      data={lifestyleList}
+                      numColumns={1}
+                      renderItem={({item}) => ( 
+                        <Pressable 
+                        onPress={() => {
+                            console.log("Tocado lifestyle: ", item);}}
+                        onLongPress={() => {
+                            console.log("Agregar lifestyle: ", item);
+                        }} 
+                        >
+                        <View style={styles.item}>
+                        <View style={{justifyContent:'center'}}>
+                          <Text adjustsFontSizeToFit style={styles.text}>{item.name}</Text>
+                          <Text>{item.habitos[0].name}</Text>
+                          <View style={{marginLeft:'5%'}}>
+                            {console.log("asdasdasda: " + item.habitos[0])}
+                            <FlatList
+                              data={item.habitos}
+                              numColumns={2}
+                              renderItem={({habito2})=>  
+                                  <View>
+                                    <Text>{habito2?.name}</Text>
+                                    {console.log("no entiendo: " + habito2)}
+                                </View>}
+                              keyExtractor={(habito2) => habito2.name}
+                            />
+                        </View>
+                         
+                        </View>
+                        </View>
+                        </Pressable>
+                      )}
+            />
         </MainWindow>
         <BottomMenu navigation={navigation} habits={habits}/>
         <MainButtonHome navigation={navigation}/>
@@ -70,6 +115,26 @@ const ManageHabits = ({ navigation }) => {
 
 
 const styles = StyleSheet.create({
+  item:{
+    backgroundColor:'white',
+    padding: 5,
+    borderRadius: 50,
+    width: '90%',
+    alignSelf: 'center',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    paddingTop: 10,
+    margin: 10,
+    shadowColor: "#000",
+    shadowOffset: {
+        width: 0,
+        height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4.84,
+
+    elevation: 5,
+  },
   container: {
     flex: 1,
     alignItems: 'center',
@@ -88,11 +153,10 @@ const styles = StyleSheet.create({
       padding: 20,
       width: '100%',
       fontWeight: 'bold',
-      
-      },
+    },
   flap: {
     padding: 30, 
-    backgroundColor: '#292B8B', 
+    backgroundColor: '#1899A0', 
     marginTop: 20,
     marginBottom: 10, 
     width: '50%', 
@@ -121,40 +185,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
     opacity: 0.8,
   },
-  habitIcon: {
-    width: '75%',
-    alignSelf: 'center',
-  },
-  habitWrapper: {
-    backgroundColor:'#eeee', 
-    marginVertical: 10, 
-    borderWidth: 1,
-    borderRadius: 50,
-    height: 100,
-    width: 100,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginHorizontal: 5,
-    overflow: 'hidden',
-  },
-  backgroundImage: {
-    flex: 1,
-    justifyContent: 'center',
-    alignContent: 'center',
-    alignSelf: 'auto',
-    borderRadius: 100,
-  },
-  cruz: {
-    flex: 1,
-    justifyContent: 'center',
-    alignContent: 'center',
-    alignSelf: 'auto',
-    borderRadius: 100,
-  },
-  dummyText: {
-    fontSize: 40, 
-    opacity: 1
-  },
+
   centeredView: {
     flex: 1,
     justifyContent: "center",

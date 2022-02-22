@@ -70,6 +70,7 @@ const Habit = ({habit}) => {
         <Text style={styles.habitDesc}>{habit.name}</Text>
         </Pressable>
 
+
     );
 };
 

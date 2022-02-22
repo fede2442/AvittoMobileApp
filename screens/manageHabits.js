@@ -13,15 +13,14 @@ import store from '../redux/store';
 
 const ManageHabits = ({ navigation }) => {
 
-  const habits = useSelector(state => state);
-
-  const dispatch = useDispatch();
-  const quitar_habito = (id) => dispatch(quitar_habito_action(id));
-  
+  const [habits, setHabitos] = useState([]);  
   const [modalOpen, setModalOpen] = useState(false);
   const [habitToDelete, setHabit] = useState("0");
   const [lifestyleList, setLifestyle] = useState([]);
 
+  useEffect(() => {
+    setHabitos(realm.objects("Habit"));
+  }, []);
 
   useEffect(() => {
     fetch('http://192.168.0.61:3000/hola')
@@ -55,7 +54,7 @@ const ManageHabits = ({ navigation }) => {
         <MainWindow backgroundImage={Images.rickBackground2i}>
           <Text style={styles.flap}>Your Habits</Text>
             <FlatList 
-                      data={habits.habitos}
+                      data={habits}
                       numColumns={2}
                       renderItem={({item}) => ( 
                         <Pressable 

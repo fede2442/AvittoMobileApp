@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { quitar_habito_action } from '../redux/reducers/notesApp';
 import realm from '../realm/realm';
 import store from '../redux/store';
+import DeleteEditCard from '../components/DeleteEditCard';
 
 const ManageHabits = ({ navigation }) => {
 
@@ -23,7 +24,7 @@ const ManageHabits = ({ navigation }) => {
   }, []);
 
   useEffect(() => {
-    fetch('http://192.168.0.61:3000/hola')
+    fetch('http://192.168.67.13:3000/hola')
     .then((response) => response.json())
     .then(data => setLifestyle(data)).catch((error)=>{
       console.log("Api call error");
@@ -55,7 +56,8 @@ const ManageHabits = ({ navigation }) => {
           <Text style={styles.flap}>Your Habits</Text>
             <FlatList 
                       data={habits}
-                      numColumns={2}
+                      numColumns={1}
+                      style={{marginBottom:10}}
                       renderItem={({item}) => ( 
                         <Pressable 
                         onPress={() => {
@@ -64,10 +66,10 @@ const ManageHabits = ({ navigation }) => {
                            //quitar_habito( item.key);
                             setHabit(item.key);
                             setModalOpen(true);
-                            console.log("agregado item: ", item);
                         }} 
                         >
                         <Text adjustsFontSizeToFit style={styles.text}>{item.name}</Text>
+                        <DeleteEditCard habit={item}/>
                         </Pressable>
                       )}
             />
@@ -79,9 +81,14 @@ const ManageHabits = ({ navigation }) => {
                       renderItem={({item}) => ( 
                         <Pressable 
                         onPress={() => {
+                          const nombres = habits.map((habito) => habito.name);
+                          
+                          let no_agregados = "";
                           for(const habit of item.habitos){
-                            console.log("Habitoo: " + habit);
-                            realm.write(() => {
+                            if(nombres.indexOf(habit.name) >= 0){
+                              no_agregados = no_agregados + habit.name + ", "; 
+                            }else{
+                              realm.write(() => {
                               realm.create("Habit", {
                                   name: habit.name,
                                   last_mod: new Date(),
@@ -90,9 +97,14 @@ const ManageHabits = ({ navigation }) => {
                                   habitIcon: habit.habitIcon,
                                   dias: habit.dias
                                 }, );
-                            });  
+                              });
+                            }                              
                           }
-                          alert("Lifestyle '" + item.name + "' agregado correctamente!" )
+                          if(no_agregados != ""){
+                              alert("Lifestyle agregado, los siguientes hábitos ya existian: " + no_agregados.substring(0,no_agregados.length - 2));
+                            }else{
+                              alert("Lifestyle '" + item.name + "' agregado correctamente!" )
+                           }
                           store.dispatch({ type: 'UPDATE'}); //Updeteo con redux el home para que aparezcan los habitos
                         }}
                         onLongPress={() => {

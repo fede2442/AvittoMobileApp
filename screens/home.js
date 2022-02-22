@@ -49,7 +49,13 @@ const Home = ({ navigation }) => {
           </View>
       </Modal>
       <View style={styles.container}>
+      <TouchableOpacity style={styles.frontFloating} onPress={() => onPress(true)} activeOpacity={0.7} >
+            <View style={styles.mainButton}>
+                <Icon.Codepen stroke="black" width={55} height={55} strokeWidth={1.2} style={{alignSelf:'center'}}/>
+            </View>
+        </TouchableOpacity>
       <Text style={styles.textoTop}>{dia_str.charAt(0).toUpperCase() + dia_str.slice(1)}, {actual_day.toLocaleDateString()}</Text>
+
         <MainWindow>
           <FlatList 
                       data={habitos}

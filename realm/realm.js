@@ -12,7 +12,6 @@ Habit.schema = {
         habitIcon: "string",
         dias: "{}"
     },
-    primaryKey: "name",
 };
 
 export default new Realm({ schema: [Habit] });

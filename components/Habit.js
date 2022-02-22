@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import {View, StyleSheet, Image, Text, Pressable} from 'react-native';
+import {View, StyleSheet, Image, Text, Pressable, Animated} from 'react-native';
 import icons from './Images';
 import * as Icon from "react-native-feather";
 import realm from '../realm/realm';
@@ -9,20 +9,35 @@ const Habit = ({habit}) => {
     
     const [buttonPresses, setButtonPresses] = useState(0);
     
-   
-
-      useEffect(() => {
+    useEffect(() => {
         sameDay(habit.last_mod,new Date()) && (habito.strikeCount != 0) ? setButtonPresses(buttonPresses + 1) : setButtonPresses(0);
     }, []);
 
-      const habitos = realm.objects("Habit");
-      const habito = habitos.filtered("name == '"+habit.name+"'")[0];
+    const animatedY  = new Animated.Value(0)
+
+    const jump = () => {
+        Animated.sequence([
+            Animated.timing(animatedY, {
+                toValue: 30,
+                duration: 200,
+                useNativeDriver: false,
+            }),
+            Animated.timing(animatedY, {
+                toValue:0,
+                duration: 200,
+                useNativeDriver: false,
+            })
+            ]).start(() => setButtonPresses(buttonPresses + 1));
+    }
+
+    const habitos = realm.objects("Habit");
+    const habito = habitos.filtered("name == '"+habit.name+"'")[0];
 
     return(
 
         <Pressable 
                 onPress={() => {
-                   
+                
                     if(buttonPresses == 0){
                         realm.write(() => {
                             habito.last_mod = new Date();
@@ -30,8 +45,8 @@ const Habit = ({habit}) => {
                             if(habito.strikeCount > habito.strikeHistoricMax){
                                 habito.strikeHistoricMax = habito.strikeCount;
                             }
-                        }); 
-                        setButtonPresses(buttonPresses + 1);
+                        });
+                        jump();
                     }
                     console.log(habito);
                     }}
@@ -49,9 +64,9 @@ const Habit = ({habit}) => {
                     }
                 }} 
           >
-        <View style={[styles.habitCirle, {backgroundColor: buttonPresses > 0 ? 'lightgreen' : '#eee'}]}>
+        <Animated.View style={[styles.habitCirle, {position:'relative', bottom: animatedY}, {backgroundColor: buttonPresses > 0 ? 'lightgreen' : '#eee'}]}>
             {icons(habit.habitIcon) }
-        </View>
+        </Animated.View>
         <Text style={styles.habitDesc}>{habit.name}</Text>
         </Pressable>
 

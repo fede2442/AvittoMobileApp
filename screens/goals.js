@@ -19,14 +19,17 @@ const Goals = ({ navigation }) => {
     <NavigationContainer>
         <View style={styles.container}>
         <MainWindow >
-          <Text style={styles.flap}>Goals</Text>
           <FlatList 
+                      ListHeaderComponent={
+                      <>
+                        <Text style={styles.flap}>Goals</Text>
+                      </>}
                       data={habitos2}
                       numColumns={1}
                       renderItem={({item}) => ( 
                         <GoalCard habit={item}/>
                       )}
-                      style={{padding:10}}
+                      keyExtractor={(item, index) => index.toString()}
                       />
         </MainWindow>
         <BottomMenu navigation={navigation}/>
@@ -56,12 +59,11 @@ const styles = StyleSheet.create({
     padding: 30, 
     backgroundColor: '#1899A0', 
     marginTop: 20, 
-    width: '50%', 
+    width: '60%', 
     borderTopLeftRadius: 40, 
     borderBottomLeftRadius: 40,
     color: '#fff',
     alignSelf: 'flex-end',
-    alignContent: 'center',
   }
 
 });

@@ -6,9 +6,9 @@ const MainWindow = (props) => {
     return(
         <View style={styles.mainWindow} >
             <ImageBackground style={styles.backgroundImage} >
-            <ScrollView>
+
                 { props.children }
-            </ScrollView>
+         
             </ImageBackground>
         </View>
     );

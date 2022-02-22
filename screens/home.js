@@ -1,28 +1,29 @@
 import 'react-native-gesture-handler';
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {View, StyleSheet, FlatList, Text, Modal } from 'react-native';
 import MainButton from '../components/MainButton';
 import BottomMenu from '../components/BottomMenu';
 import MainWindow from '../components/MainWindow';
 import { NavigationContainer } from '@react-navigation/native';
 import Habit from '../components/Habit';
-import { useDispatch, useSelector } from 'react-redux';
-import contarMas from '../redux/reducers/notesApp';
 import * as Icon from "react-native-feather";
 import AddHabitForm from '../components/AddHabitForm';
 import realm from '../realm/realm';
 import dias from '../utils/dias';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+import store from '../redux/store';
 
 
 const Home = ({ navigation }) => {
 
 
   const [modalOpen, setModalOpen] = useState(false);
-  
-  
-  //const habits = useSelector(state => state);
-  //const dispatch = useDispatch();
-  //const contar_mas = () => dispatch(contarMas());
+  const [habitos, setHabitos] = useState([]);
+  const [update, setUpdate] = useState(false); //Maneja el update del home
+
+  store.subscribe(()=>
+      setUpdate(store.getState().update)
+  )
 
   const setModal = bool => {
       setModalOpen(bool);
@@ -32,7 +33,9 @@ const Home = ({ navigation }) => {
   const dia_num = actual_day.getDay() === 0 ? 6 : actual_day.getDay()-1; //1er dia de la semana en java es domingo
   const dia_str = dias[dia_num];
 
-  const habitos = realm.objects("Habit").filtered(`dias["${dia_str}"] == true`);
+  useEffect(() => {
+    setHabitos(realm.objects("Habit").filtered(`dias["${dia_str}"] == true`));
+  }, [update]);
 
   return (
     <NavigationContainer>
@@ -45,7 +48,6 @@ const Home = ({ navigation }) => {
               <AddHabitForm close={setModal}/>
           </View>
       </Modal>
-      
       <View style={styles.container}>
       <Text style={styles.textoTop}>{dia_str.charAt(0).toUpperCase() + dia_str.slice(1)}, {actual_day.toLocaleDateString()}</Text>
         <MainWindow>

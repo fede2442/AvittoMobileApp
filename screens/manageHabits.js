@@ -8,6 +8,8 @@ import { NavigationContainer } from '@react-navigation/native';
 import Images from '../components/Images';
 import { useDispatch, useSelector } from 'react-redux';
 import { quitar_habito_action } from '../redux/reducers/notesApp';
+import realm from '../realm/realm';
+import store from '../redux/store';
 
 const ManageHabits = ({ navigation }) => {
 
@@ -74,32 +76,39 @@ const ManageHabits = ({ navigation }) => {
             <FlatList 
                       data={lifestyleList}
                       numColumns={1}
+                      keyExtractor={(item, index) => item.name.toString()}
                       renderItem={({item}) => ( 
                         <Pressable 
                         onPress={() => {
-                            console.log("Tocado lifestyle: ", item);}}
+                          for(const habit of item.habitos){
+                            console.log("Habitoo: " + habit);
+                            realm.write(() => {
+                              realm.create("Habit", {
+                                  name: habit.name,
+                                  last_mod: new Date(),
+                                  strikeCount: 0,
+                                  strikeHistoricMax: 0,
+                                  habitIcon: habit.habitIcon,
+                                  dias: habit.dias
+                                }, );
+                            });  
+                          }
+                          alert("Lifestyle '" + item.name + "' agregado correctamente!" )
+                          store.dispatch({ type: 'UPDATE'}); //Updeteo con redux el home para que aparezcan los habitos
+                        }}
                         onLongPress={() => {
                             console.log("Agregar lifestyle: ", item);
                         }} 
                         >
                         <View style={styles.item}>
-                        <View style={{justifyContent:'center'}}>
-                          <Text adjustsFontSizeToFit style={styles.text}>{item.name}</Text>
-                          <Text>{item.habitos[0].name}</Text>
-                          <View style={{marginLeft:'5%'}}>
-                            {console.log("asdasdasda: " + item.habitos[0])}
+                        <View style={{flexDirection:'row'}}>
+                          <Text adjustsFontSizeToFit style={[styles.text, {width:'45%'}]}>{item.name}</Text>
                             <FlatList
                               data={item.habitos}
-                              numColumns={2}
-                              renderItem={({habito2})=>  
-                                  <View>
-                                    <Text>{habito2?.name}</Text>
-                                    {console.log("no entiendo: " + habito2)}
-                                </View>}
-                              keyExtractor={(habito2) => habito2.name}
+                              style = {{flexDirection: 'column', width:'55%', flexWrap:'wrap'}}
+                              renderItem={({item}) => <Text key={item.name} style={{marginBottom:2}}>- {item.name}</Text>}
+                              keyExtractor={item => item.name}
                             />
-                        </View>
-                         
                         </View>
                         </View>
                         </Pressable>
@@ -145,9 +154,9 @@ const styles = StyleSheet.create({
     backgroundColor:'#343635'
   },
   text: {
-    padding: 20,
+    paddingLeft: 20,
     width: '100%',
-    fontWeight: 'bold'
+    fontWeight: 'bold',
     },
     modalText: {
       padding: 20,

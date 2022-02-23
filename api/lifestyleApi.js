@@ -48,6 +48,26 @@ lifestyles = [
                 strikeHistoricMax: 0,
                 habitIcon: 'smile',
                 dias:  {lunes: true, martes: true, miercoles: true, jueves: true, viernes: true, sabado: true, domingo: true}}]
+    },
+    {name: 'Estudio A Full',
+    habitos: [{ name: "Estudiar 2 Horas",
+                last_mod: new Date(),
+                strikeCount: 0,
+                strikeHistoricMax: 0,
+                habitIcon: 'smile',
+                dias:  {lunes: true, martes: true, miercoles: true, jueves: true, viernes: true, sabado: true, domingo: true}},
+                { name: "Explicar un Tema",
+                last_mod: new Date(),
+                strikeCount: 0,
+                strikeHistoricMax: 0,
+                habitIcon: 'smile',
+                dias:  {lunes: true, martes: true, miercoles: true, jueves: true, viernes: true, sabado: true, domingo: true}},
+                { name: "Práctica Ejs",
+                last_mod: new Date(),
+                strikeCount: 0,
+                strikeHistoricMax: 0,
+                habitIcon: 'smile',
+                dias:  {lunes: true, martes: true, miercoles: true, jueves: true, viernes: true, sabado: true, domingo: true}}]
     }]
 
 

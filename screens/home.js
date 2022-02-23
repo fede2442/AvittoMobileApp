@@ -12,7 +12,7 @@ import realm from '../realm/realm';
 import dias from '../utils/dias';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import store from '../redux/store';
-
+import Header from '../components/Header'
 
 const Home = ({ navigation }) => {
 
@@ -37,6 +37,14 @@ const Home = ({ navigation }) => {
     setHabitos(realm.objects("Habit").filtered(`dias["${dia_str}"] == true`));
   }, [update]);
 
+
+
+  function delete_all(){
+    realm.write(() => {
+      realm.deleteAll();
+    });
+    setUpdate(!update);
+  }
   return (
     <NavigationContainer>
 
@@ -48,14 +56,13 @@ const Home = ({ navigation }) => {
               <AddHabitForm close={setModal}/>
           </View>
       </Modal>
+      <TouchableOpacity onPress={() => delete_all()}  activeOpacity={0.7} style={{backgroundColor:'red'}}>
+        <View style={{alignContent:'center',alignSelf:'center',height:20,width:300,backgroundColor:'red'}}>
+          <Text>BORRAR TODO</Text>
+        </View>
+      </TouchableOpacity>
       <View style={styles.container}>
-      <TouchableOpacity style={styles.frontFloating} onPress={() => onPress(true)} activeOpacity={0.7} >
-            <View style={styles.mainButton}>
-                <Icon.Codepen stroke="black" width={55} height={55} strokeWidth={1.2} style={{alignSelf:'center'}}/>
-            </View>
-        </TouchableOpacity>
-      <Text style={styles.textoTop}>{dia_str.charAt(0).toUpperCase() + dia_str.slice(1)}, {actual_day.toLocaleDateString()}</Text>
-
+        <Header navigation={navigation}/>
         <MainWindow>
           <FlatList 
                       data={habitos}
@@ -67,7 +74,7 @@ const Home = ({ navigation }) => {
                       />
         </MainWindow>
         <BottomMenu navigation={navigation} />
-        <MainButton navigation={navigation} onPress={setModalOpen}/>
+        <MainButton onPress={setModalOpen}/>
       </View>
     </NavigationContainer>
   );
@@ -108,15 +115,7 @@ const styles = StyleSheet.create({
         marginLeft:'25%',
         marginBottom:10
       },
-      textoTop:{
-       alignSelf:'center',
-       fontFamily: 'notoserif',
-       fontSize: 25,
-       fontWeight: 'bold',
-       color:'#EEE5E9' 
-      
 
-      }
 });
 
 export default Home;

@@ -47,18 +47,22 @@ const GoalCard = ({habit}) => {
 
     return(
         <View style={styles.item}>
-        <View style={{justifyContent:'center'}}>
-          {icons(habit.habitIcon)}
+        <View style={{justifyContent:'center',marginLeft: 5, minHeight:40, minWidth:40}}>
+          {icons(habit.habitIcon) == false  ? 
+                                            <Icon.X stroke='black' width={30} height={30} strokeWidth={1.2} style={{alignSelf:'center'}}/> 
+                                            : icons(habit.habitIcon)}
         </View>
-          <View style={{marginLeft:'5%'}}>
-            <Text style={{fontSize: 20, fontWeight: "bold"}}>{habit.name}</Text>
+          <View style={{marginLeft:15, flexShrink:0.5,  width:'60%'}}>
+            <Text style={{fontSize: 20, fontWeight: "bold", flexShrink:0.5}}>{habit.name}</Text>
             <Text>Racha Actual: {habit.strikeCount}</Text>
             <Text>Máximo Histórico: {habit.strikeHistoricMax}</Text>
           </View>
+          <View style={{justifyContent:'flex-end',alignContent:'flex-end'}}>
           {(habit.strikeCount === habit.strikeHistoricMax) && (habit.strikeHistoricMax != 0) ? 
-          <Icon.ChevronsUp stroke="#2ECC71" width={50} height={50} strokeWidth={1.2} style={{alignSelf:'center', marginLeft:'25%'}}/>
+          <Icon.ChevronsUp stroke="#2ECC71" width={60} height={60} strokeWidth={1.2} style={{}}/>
           : <Text></Text>
           }
+          </View>
         </View>
     );
 };

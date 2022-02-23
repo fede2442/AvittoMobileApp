@@ -8,6 +8,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import icons from '../components/Images';
 import realm from '../realm/realm';
 import GoalCard from '../components/GoalCard';
+import Header from '../components/Header'
 
 const Goals = ({ navigation }) => {
 
@@ -18,6 +19,7 @@ const Goals = ({ navigation }) => {
   return (
     <NavigationContainer>
         <View style={styles.container}>
+        <Header navigation={navigation}/>
         <MainWindow >
           <FlatList 
                       ListHeaderComponent={

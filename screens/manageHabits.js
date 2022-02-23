@@ -11,6 +11,7 @@ import { quitar_habito_action } from '../redux/reducers/notesApp';
 import realm from '../realm/realm';
 import store from '../redux/store';
 import DeleteEditCard from '../components/DeleteEditCard';
+import Header from '../components/Header'
 
 const ManageHabits = ({ navigation }) => {
 
@@ -24,7 +25,7 @@ const ManageHabits = ({ navigation }) => {
   }, []);
 
   useEffect(() => {
-    fetch('http://192.168.67.13:3000/hola')
+    fetch('http://192.168.0.61:3000/hola')
     .then((response) => response.json())
     .then(data => setLifestyle(data)).catch((error)=>{
       console.log("Api call error");
@@ -52,27 +53,8 @@ const ManageHabits = ({ navigation }) => {
         </Modal>
 
         <View style={styles.container}>
+        <Header navigation={navigation}/>
         <MainWindow backgroundImage={Images.rickBackground2i}>
-          <Text style={styles.flap}>Your Habits</Text>
-            <FlatList 
-                      data={habits}
-                      numColumns={1}
-                      style={{marginBottom:10}}
-                      renderItem={({item}) => ( 
-                        <Pressable 
-                        onPress={() => {
-                            console.log("Sacado item: ", item);}}
-                        onLongPress={() => {
-                           //quitar_habito( item.key);
-                            setHabit(item.key);
-                            setModalOpen(true);
-                        }} 
-                        >
-                        <Text adjustsFontSizeToFit style={styles.text}>{item.name}</Text>
-                        <DeleteEditCard habit={item}/>
-                        </Pressable>
-                      )}
-            />
             <Text style={styles.flap}>Add a LifeStyle</Text>
             <FlatList 
                       data={lifestyleList}
@@ -82,7 +64,6 @@ const ManageHabits = ({ navigation }) => {
                         <Pressable 
                         onPress={() => {
                           const nombres = habits.map((habito) => habito.name);
-                          
                           let no_agregados = "";
                           for(const habit of item.habitos){
                             if(nombres.indexOf(habit.name) >= 0){
@@ -146,13 +127,13 @@ const styles = StyleSheet.create({
     paddingTop: 10,
     margin: 10,
     shadowColor: "#000",
+    minHeight:60,
     shadowOffset: {
         width: 0,
         height: 2,
     },
     shadowOpacity: 0.25,
     shadowRadius: 4.84,
-
     elevation: 5,
   },
   container: {

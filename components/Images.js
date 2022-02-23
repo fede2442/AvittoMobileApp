@@ -53,6 +53,7 @@ function icons(source) {
         case 'droplet': return <Icon.Droplet stroke="black" width={width_height} height={width_height} strokeWidth={strokeWidth}/>;
         case 'codePen': return <Icon.Codepen stroke="black" width={width_height} height={width_height} strokeWidth={strokeWidth}/>;
         case 'smile': return <Icon.Smile stroke="black" width={width_height} height={width_height} strokeWidth={strokeWidth}/>;
+        case 'edit': return <Icon.Edit stroke="black" width={width_height} height={width_height} strokeWidth={strokeWidth}/>;
         default : return false;
     }
 }

@@ -2,13 +2,13 @@ import React from 'react';
 import {View, Text, StyleSheet, Image, TouchableOpacity} from 'react-native';
 import * as Icon from "react-native-feather"
 
-const BottomMenu = ({ navigation , habits}) => {
+const BottomMenu = ({ navigation }) => {
         
     return(
         <View style={styles.menuBar}>
             <TouchableOpacity onPress={() => navigation.navigate('ManageHabits')}  activeOpacity={0.7}>
               <View style={styles.shadow}>
-              <Icon.Settings stroke="black" width={60} height={60} strokeWidth={1}/>
+              <Icon.Download stroke="black" width={55} height={55} strokeWidth={1}/>
               </View>
             </TouchableOpacity>
             <Text style={styles.Invisibletext}/>

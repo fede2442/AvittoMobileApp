@@ -1,36 +1,35 @@
 import 'react-native-gesture-handler';
 import React  from 'react';
-import {View, StyleSheet, Text, FlatList} from 'react-native';
+import {View, StyleSheet, Text, FlatList, Pressable} from 'react-native';
 import MainButtonHome from '../components/MainButtonHome';
 import BottomMenu from '../components/BottomMenu';
 import MainWindow from '../components/MainWindow';
 import { NavigationContainer } from '@react-navigation/native';
-import icons from '../components/Images';
 import realm from '../realm/realm';
 import GoalCard from '../components/GoalCard';
-
+import Header from '../components/Header'
+import DeleteEditCard from '../components/DeleteEditCard'
 const EditDelete = ({ navigation }) => {
 
   const habitos = realm.objects("Habit");
-  
-  let habitos2 = habitos.sorted( 'strikeCount' , true);
 
   return (
     <NavigationContainer>
         <View style={styles.container}>
+        <Header navigation={navigation}/>
         <MainWindow >
-          <FlatList 
-                      ListHeaderComponent={
+            <FlatList 
+                    ListHeaderComponent={
                       <>
-                        <Text style={styles.flap}>Goals</Text>
+                        <Text style={styles.flap}>Your Habits</Text>
                       </>}
-                      data={habitos2}
+                      data={habitos}
                       numColumns={1}
+                      style={{marginBottom:10}}
                       renderItem={({item}) => ( 
-                        <GoalCard habit={item}/>
+                          <DeleteEditCard habit={item}/>
                       )}
-                      keyExtractor={(item, index) => index.toString()}
-                      />
+            />
         </MainWindow>
         <BottomMenu navigation={navigation}/>
         <MainButtonHome navigation={navigation}/>
@@ -53,18 +52,20 @@ const styles = StyleSheet.create({
 
   },
   text: {
-    fontSize: 20,
-  },
+    paddingLeft: 20,
+    width: '100%',
+    fontWeight: 'bold',
+    },
   flap: {
     padding: 30, 
     backgroundColor: '#1899A0', 
-    marginTop: 20, 
-    width: '60%', 
-    borderTopLeftRadius: 40, 
-    borderBottomLeftRadius: 40,
+    marginTop: 20,
+    marginBottom: 10, 
+    width: '100%', 
+    textAlign:'center',
     color: '#fff',
-    alignSelf: 'flex-end',
-  }
+    fontWeight: 'bold'
+  },
 
 });
 

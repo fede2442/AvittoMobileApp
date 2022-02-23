@@ -3,6 +3,7 @@ import { createAppContainer } from 'react-navigation';
 import Home from '../screens/home';
 import Goals from '../screens/goals';
 import ManageHabits from '../screens/manageHabits';
+import EditDelete from '../screens/editDelete';
 
 const screens = {
     Home: {
@@ -13,6 +14,9 @@ const screens = {
     },
     ManageHabits: {
         screen: ManageHabits,
+    },
+    EditDelete:{
+        screen: EditDelete,
     }
 };
 

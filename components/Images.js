@@ -50,6 +50,13 @@ function icons(source) {
         case 'mail': return <Icon.Mail stroke="black" width={width_height} height={width_height} strokeWidth={strokeWidth}/>;
         case 'music': return <Icon.Music stroke="black" width={width_height} height={width_height} strokeWidth={strokeWidth}/>;
         case 'user': return <Icon.User stroke="black" width={width_height} height={width_height} strokeWidth={strokeWidth}/>;
+        case 'droplet': return <Icon.Droplet stroke="black" width={width_height} height={width_height} strokeWidth={strokeWidth}/>;
+        case 'codePen': return <Icon.Codepen stroke="black" width={width_height} height={width_height} strokeWidth={strokeWidth}/>;
+        case 'smile': return <Icon.Smile stroke="black" width={width_height} height={width_height} strokeWidth={strokeWidth}/>;
+        case 'edit': return <Icon.Edit stroke="black" width={width_height} height={width_height} strokeWidth={strokeWidth}/>;
+        case 'video': return <Icon.Video stroke="black" width={width_height} height={width_height} strokeWidth={strokeWidth}/>;
+        case 'search': return <Icon.Search stroke="black" width={width_height} height={width_height} strokeWidth={strokeWidth}/>;
+        case 'editar2': return <Icon.Edit2 stroke="black" width={width_height} height={width_height} strokeWidth={strokeWidth}/>;
         default : return false;
     }
 }

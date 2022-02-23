@@ -24,12 +24,12 @@ const styles = StyleSheet.create({
         top: '85%',
         justifyContent: 'center',
         alignContent: 'center',
-        backgroundColor:'#6A9196',
+        backgroundColor:'#92DCE5',
         borderRadius: 90/2,
         width: 90,
         height: 90,// TODO: decidir como estilizar el boton
-//        borderColor: 'black',
-  //      borderWidth: 2
+        borderColor: '#7C7C7C',
+        borderWidth: 0.2
     },
 });
 

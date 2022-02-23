@@ -1,24 +1,49 @@
 import 'react-native-gesture-handler';
-import React , { useState }from 'react';
-import {View, StyleSheet, Text, FlatList, ImageBackground, Pressable, Modal, Button} from 'react-native';
+import React , { useState, useEffect }from 'react';
+import {View, StyleSheet, Text, FlatList, PanResponder, Animated, Pressable, Modal, Button} from 'react-native';
 import MainButtonHome from '../components/MainButtonHome';
 import BottomMenu from '../components/BottomMenu';
 import MainWindow from '../components/MainWindow';
 import { NavigationContainer } from '@react-navigation/native';
-import Images from '../components/Images';
-import { useDispatch, useSelector } from 'react-redux';
-import { quitar_habito_action } from '../redux/reducers/notesApp';
-import { MaterialIcons } from 'react-native-vector-icons';
+import realm from '../realm/realm';
+import store from '../redux/store';
+import Header from '../components/Header'
 
 const ManageHabits = ({ navigation }) => {
 
-  const habits = useSelector(state => state);
-
-  const dispatch = useDispatch();
-  const quitar_habito = (id) => dispatch(quitar_habito_action(id));
-  
+  const [habits, setHabitos] = useState([]);  
   const [modalOpen, setModalOpen] = useState(false);
   const [habitToDelete, setHabit] = useState("0");
+  const [lifestyleList, setLifestyle] = useState([]);
+
+  useEffect(() => {
+    setHabitos(realm.objects("Habit"));
+  }, []);
+
+  useEffect(() => {
+    fetch('http://192.168.0.61:3000/hola')
+    .then((response) => response.json())
+    .then(data => setLifestyle(data)).catch((error)=>{
+      console.log("Api call error");
+      alert(error.message);
+    });
+    console.log(lifestyleList)
+  }, []);
+
+  let pan = new Animated.ValueXY();
+  let _val = { x:0,y:0};
+  pan.addListener((value) => _val = value);
+  let panResponder = PanResponder.create({
+      onStartShouldSetPanResponder: (e, gesture) => true,
+      onPanResponderRelease: (e,gesture) => {
+          console.log(gesture)
+          if(Math.abs(gesture.dx) > 50){
+            if(gesture.dx < 0 ){
+              navigation.navigate('Home')
+            }
+          }
+      }
+  });
 
   return (
       <NavigationContainer>
@@ -39,27 +64,62 @@ const ManageHabits = ({ navigation }) => {
         </Modal>
 
         <View style={styles.container}>
-        <MainWindow backgroundImage={Images.rickBackground2i}>
-          <Text style={styles.flap}>Your Habits</Text>
+        <Header navigation={navigation}/>
+        <MainWindow >
+        <Animated.View style= {{flex:1}}{...panResponder.panHandlers}>
+
+            <Text style={styles.flap}>Add a LifeStyle</Text>
             <FlatList 
-                      data={habits.habitos}
+                      data={lifestyleList}
                       numColumns={1}
+                      keyExtractor={(item) => "manageHabits" + item.name}
                       renderItem={({item}) => ( 
                         <Pressable 
                         onPress={() => {
-                            console.log("Sacado item: ", item);}}
+                          const nombres = habits.map((habito) => habito.name);
+                          let no_agregados = "";
+                          for(const habit of item.habitos){
+                            if(nombres.indexOf(habit.name) >= 0){
+                              no_agregados = no_agregados + habit.name + ", "; 
+                            }else{
+                              realm.write(() => {
+                              realm.create("Habit", {
+                                  name: habit.name,
+                                  last_mod: new Date(),
+                                  strikeCount: 0,
+                                  strikeHistoricMax: 0,
+                                  habitIcon: habit.habitIcon,
+                                  dias: habit.dias
+                                }, );
+                              });
+                            }                              
+                          }
+                          if(no_agregados != ""){
+                              alert("Lifestyle agregado, los siguientes hábitos ya existian: " + no_agregados.substring(0,no_agregados.length - 2));
+                            }else{
+                              alert("Lifestyle '" + item.name + "' agregado correctamente!" )
+                           }
+                          store.dispatch({ type: 'UPDATE'}); //Updeteo con redux el home para que aparezcan los habitos
+                        }}
                         onLongPress={() => {
-                           //quitar_habito( item.key);
-                            setHabit(item.key);
-                            setModalOpen(true);
-                            console.log("agregado item: ", item);
+                            console.log("Agregar lifestyle: ", item);
                         }} 
                         >
-                        <Text adjustsFontSizeToFit style={styles.text}>{item.name}</Text>
+                        <View style={styles.item}>
+                        <View style={{flexDirection:'row'}}>
+                          <Text adjustsFontSizeToFit style={[styles.text, {width:'45%'}]}>{item.name}</Text>
+                            <FlatList
+                              data={item.habitos}
+                              style = {{flexDirection: 'column', width:'55%', flexWrap:'wrap'}}
+                              renderItem={({item}) => <Text key={item.name} style={{marginBottom:2}}>- {item.name}</Text>}
+                              keyExtractor={item => "ManageHabit 2" + item.name}
+                            />
+                        </View>
+                        </View>
                         </Pressable>
                       )}
             />
-            <Text style={styles.flap}>Add a new habit</Text>
+        </Animated.View>
         </MainWindow>
         <BottomMenu navigation={navigation} habits={habits}/>
         <MainButtonHome navigation={navigation}/>
@@ -70,6 +130,26 @@ const ManageHabits = ({ navigation }) => {
 
 
 const styles = StyleSheet.create({
+  item:{
+    backgroundColor:'white',
+    padding: 5,
+    borderRadius: 50,
+    width: '90%',
+    alignSelf: 'center',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    paddingTop: 10,
+    margin: 10,
+    shadowColor: "#000",
+    minHeight:60,
+    shadowOffset: {
+        width: 0,
+        height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4.84,
+    elevation: 5,
+  },
   container: {
     flex: 1,
     alignItems: 'center',
@@ -80,19 +160,18 @@ const styles = StyleSheet.create({
     backgroundColor:'#343635'
   },
   text: {
-    padding: 20,
+    paddingLeft: 20,
     width: '100%',
-    fontWeight: 'bold'
+    fontWeight: 'bold',
     },
     modalText: {
       padding: 20,
       width: '100%',
       fontWeight: 'bold',
-      
-      },
+    },
   flap: {
     padding: 30, 
-    backgroundColor: '#292B8B', 
+    backgroundColor: '#1899A0', 
     marginTop: 20,
     marginBottom: 10, 
     width: '50%', 
@@ -121,40 +200,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
     opacity: 0.8,
   },
-  habitIcon: {
-    width: '75%',
-    alignSelf: 'center',
-  },
-  habitWrapper: {
-    backgroundColor:'#eeee', 
-    marginVertical: 10, 
-    borderWidth: 1,
-    borderRadius: 50,
-    height: 100,
-    width: 100,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginHorizontal: 5,
-    overflow: 'hidden',
-  },
-  backgroundImage: {
-    flex: 1,
-    justifyContent: 'center',
-    alignContent: 'center',
-    alignSelf: 'auto',
-    borderRadius: 100,
-  },
-  cruz: {
-    flex: 1,
-    justifyContent: 'center',
-    alignContent: 'center',
-    alignSelf: 'auto',
-    borderRadius: 100,
-  },
-  dummyText: {
-    fontSize: 40, 
-    opacity: 1
-  },
+
   centeredView: {
     flex: 1,
     justifyContent: "center",

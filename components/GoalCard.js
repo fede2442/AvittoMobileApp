@@ -8,23 +8,23 @@ import sameDay from '../utils/sameDay';
 
 const GoalCard = ({habit}) => {
 
-    var dict = habit.dias;
-    var dias_habiles = [];
-    for(var key in dict) { //["lunes","martes","miercoles"]
-      var value = dict[key];
+    let dict = habit.dias;
+    let dias_habiles = [];
+    for(let key in dict) { //["lunes","martes","miercoles"]
+      let value = dict[key];
       if(dict[key]){
         dias_habiles.push(key);
       }
     }
 
-    var now = new Date();
-    var cont_dias_habiles = 0;
-    var habit_last_mod = habit.last_mod;
+    let now = new Date();
+    let cont_dias_habiles = 0;
+    let habit_last_mod = habit.last_mod;
     habit_last_mod.setDate(habit_last_mod.getDate()+1)
 
     //Cuento desde la ultima vez presionado el habito contando solo los dias habiles del mismo
     //Lun, Mie, Sab = cuento solo estos dias
-    for (var d = habit.last_mod; !sameDay(d,now) ; d.setDate(d.getDate() + 1)) {
+    for (let d = habit.last_mod; !sameDay(d,now) ; d.setDate(d.getDate() + 1)) {
       const dia_num = d.getDay() === 0 ? 6 : d.getDay()-1; //1er dia de la semana en java es domingo
       if(dias_habiles.indexOf(dias[dia_num]) >= 0){
         cont_dias_habiles++;
@@ -36,7 +36,7 @@ const GoalCard = ({habit}) => {
 
     //Si paso mas de un dia del habito sin marcarlo se resetea la racha
     if(cont_dias_habiles > 1){ 
-        var dia_anterior = new Date();
+        let dia_anterior = new Date();
         dia_anterior.setDate(dia_anterior.getDate()-1);
         realm.write(() => {
           habito.last_mod =  dia_anterior; //set yesterdays date
@@ -47,18 +47,22 @@ const GoalCard = ({habit}) => {
 
     return(
         <View style={styles.item}>
-        <View style={{justifyContent:'center'}}>
-          {icons(habit.habitIcon)}
+        <View style={{justifyContent:'center',marginLeft: 5, minHeight:40, minWidth:40}}>
+          {icons(habit.habitIcon) == false  ? 
+                                            <Icon.X stroke='black' width={30} height={30} strokeWidth={1.2} style={{alignSelf:'center'}}/> 
+                                            : icons(habit.habitIcon)}
         </View>
-          <View style={{marginLeft:'5%'}}>
-            <Text style={{fontSize: 20, fontWeight: "bold"}}>{habit.name}</Text>
+          <View style={{marginLeft:15, flexShrink:0.5,  width:'60%'}}>
+            <Text style={{fontSize: 20, fontWeight: "bold", flexShrink:0.5}}>{habit.name}</Text>
             <Text>Racha Actual: {habit.strikeCount}</Text>
             <Text>Máximo Histórico: {habit.strikeHistoricMax}</Text>
           </View>
+          <View style={{justifyContent:'flex-end',alignContent:'flex-end'}}>
           {(habit.strikeCount === habit.strikeHistoricMax) && (habit.strikeHistoricMax != 0) ? 
-          <Icon.ChevronsUp stroke="#2ECC71" width={50} height={50} strokeWidth={1.2} style={{alignSelf:'center', marginLeft:'25%'}}/>
+          <Icon.ChevronsUp stroke="#2ECC71" width={60} height={60} strokeWidth={1.2} style={{flex:1}}/>
           : <Text></Text>
           }
+          </View>
         </View>
     );
 };

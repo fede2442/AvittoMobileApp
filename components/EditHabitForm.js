@@ -1,18 +1,15 @@
-import React , {useState} from 'react';
-import {StyleSheet, FlatList, View, Text, TextInput, Button, TouchableOpacity } from 'react-native';
-import {Formik, Form, Field, Option} from 'formik';
-import { agregar_habito_action } from '../redux/reducers/notesApp';
-import { useDispatch, useSelector } from 'react-redux';
+import React, {useState} from 'react';
+import {StyleSheet,  View, TextInput, Button, TouchableOpacity, Text, FlatList, ScrollView, Keyboard } from 'react-native';
+import {Formik} from 'formik';
 import realm from '../realm/realm';
 import DiaCheckbox from './DiaCheckbox';
+import store from '../redux/store';
 import iconNames from '../utils/iconNames'
 import icon from '../components/Images'
 
-const AddHabitForm = ({ close }) => {
-    
-    const [selectedIcon,setSelectedIcon] = useState("");
+const EditHabitForm = ({ close, nombre, icono, diasHab }) => {
 
-    const dias =  ['lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado', 'domingo'];
+    const [selectedIcon,setSelectedIcon] = useState(icono);
 
     const styles = StyleSheet.create({
         textInput: {
@@ -24,44 +21,39 @@ const AddHabitForm = ({ close }) => {
             margin:5,
         }
     })
+    
+    const dias =  ['lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado', 'domingo'];
 
     return (
         <View>
             <Formik
-                initialValues={{ nombre: '', dias: {lunes: false, martes: false, miercoles: false, jueves: false, viernes: false, sabado: false, domingo: false} }}
+                initialValues={{ nombre: nombre, icono: icono, dias: JSON.parse(JSON.stringify(diasHab)) }}
                 onSubmit={(values) => {
+                    console.log("nombre = "+ values.nombre)
+                    const habito = realm.objects("Habit").filtered("name == '"+ nombre +"'")[0];
                     realm.write(() => {
-                        realm.create("Habit", {
-                        name: values.nombre,
-                        last_mod: new Date(),
-                        strikeCount: 0,
-                        strikeHistoricMax: 0,
-                        habitIcon: selectedIcon,
-                        dias: values.dias
-                    }, );
+                        habito.name =  values?.nombre;
+                        habito.habitIcon = values?.icono;
+                        habito.dias =  values?.dias;
                     });
-
-                    alert('Habito agregado');
+                    store.dispatch({ type: 'UPDATE'});
+                    alert('Habito modificado' + habito.dias);
                     close(false);
                 }}
             >
             {(props) => (
                 <View >
+                <ScrollView contentContainerStyle={{flexGrow: 1}}
+                    keyboardShouldPersistTaps='handled'
+                    >
                     <TextInput
                         style={styles.textInput}
                         placeholder='Nombre del Habito'
                         onChangeText={props.handleChange('nombre')}
                         value={props.values.nombre}
                     />
-                       {/* 
-                    <TextInput
-                        style={styles.textInput}
-                        placeholder='Elegir Icono'
-                        onChangeText={props.handleChange('icono')}
-                        value={props.values.icono}
-                        //keyboardType='numeric'
-                    />*/}
-                    <View style={{flexDirection:'row', marginVertical: 10,alignItems:'center'}}>
+
+                    <View style={{flexDirection:'row', marginVertical: 10, alignItems:'center'}}>
                         <Text > Icono seleccionado: </Text>
                         {icon(selectedIcon)}
                     </View>
@@ -70,7 +62,7 @@ const AddHabitForm = ({ close }) => {
                       data={iconNames}
                       numColumns={4}
                       style={{marginBottom:5}}
-                      keyExtractor={(item) => "AddHabit" + item.name}
+                      keyExtractor={(item) => "EditHabit" + item}
                       renderItem={({item}) => ( 
                           <TouchableOpacity onPress={() => setSelectedIcon(item)} style={{width:'25%', justifyContent:'center', alignItems:'center'}}>
                             {icon(item)}
@@ -84,14 +76,13 @@ const AddHabitForm = ({ close }) => {
                     })}
                         
                     <Button title='submit' onPress={props.handleSubmit}/>
+                    </ScrollView>
                 </View>
             )}
             </Formik>
         </View>
     )
 
-
-
 }
 
-export default AddHabitForm;
+export default EditHabitForm;

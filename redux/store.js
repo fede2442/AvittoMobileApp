@@ -1,7 +1,7 @@
 
 import { createStore } from 'redux'
-import habits from './reducers/notesApp'
+import contador_reducer from './reducers/notesApp'
 
-const store = createStore(habits)
+const store = createStore(contador_reducer);
 
 export default store

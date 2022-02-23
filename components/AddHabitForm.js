@@ -53,14 +53,6 @@ const AddHabitForm = ({ close }) => {
                         onChangeText={props.handleChange('nombre')}
                         value={props.values.nombre}
                     />
-                       {/* 
-                    <TextInput
-                        style={styles.textInput}
-                        placeholder='Elegir Icono'
-                        onChangeText={props.handleChange('icono')}
-                        value={props.values.icono}
-                        //keyboardType='numeric'
-                    />*/}
                     <View style={{flexDirection:'row', marginVertical: 10,alignItems:'center'}}>
                         <Text > Icono seleccionado: </Text>
                         {icon(selectedIcon)}
@@ -70,7 +62,7 @@ const AddHabitForm = ({ close }) => {
                       data={iconNames}
                       numColumns={4}
                       style={{marginBottom:5}}
-                      keyExtractor={(item) => "AddHabit" + item.name}
+                      keyExtractor={(item, index) => index.toString() + item.name}
                       renderItem={({item}) => ( 
                           <TouchableOpacity onPress={() => setSelectedIcon(item)} style={{width:'25%', justifyContent:'center', alignItems:'center'}}>
                             {icon(item)}

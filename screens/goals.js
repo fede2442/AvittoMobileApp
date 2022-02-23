@@ -14,7 +14,7 @@ const Goals = ({ navigation }) => {
 
   const habitos = realm.objects("Habit");
   
-  let habitos2 = habitos.sorted( 'strikeCount' , true);
+  let habitos2 = habitos.sorted( 'strikeHistoricMax' , true);
 
   let pan = new Animated.ValueXY();
   let _val = { x:0,y:0};
@@ -22,7 +22,6 @@ const Goals = ({ navigation }) => {
   let panResponder = PanResponder.create({
       onStartShouldSetPanResponder: (e, gesture) => true,
       onPanResponderRelease: (e,gesture) => {
-          console.log(gesture)
           if(Math.abs(gesture.dx) > 50){
             if(gesture.dx > 0 ){
               navigation.navigate('Home')

@@ -8,6 +8,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import realm from '../realm/realm';
 import store from '../redux/store';
 import Header from '../components/Header'
+import * as Icon from "react-native-feather"
 
 const ManageHabits = ({ navigation }) => {
 
@@ -27,7 +28,6 @@ const ManageHabits = ({ navigation }) => {
       console.log("Api call error");
       alert(error.message);
     });
-    console.log(lifestyleList)
   }, []);
 
   let pan = new Animated.ValueXY();
@@ -36,7 +36,6 @@ const ManageHabits = ({ navigation }) => {
   let panResponder = PanResponder.create({
       onStartShouldSetPanResponder: (e, gesture) => true,
       onPanResponderRelease: (e,gesture) => {
-          console.log(gesture)
           if(Math.abs(gesture.dx) > 50){
             if(gesture.dx < 0 ){
               navigation.navigate('Home')
@@ -67,14 +66,23 @@ const ManageHabits = ({ navigation }) => {
         <Header navigation={navigation}/>
         <MainWindow >
         <Animated.View style= {{flex:1}}{...panResponder.panHandlers}>
-
-            <Text style={styles.flap}>Add a LifeStyle</Text>
-            <FlatList 
-                      data={lifestyleList}
-                      numColumns={1}
-                      keyExtractor={(item) => "manageHabits" + item.name}
-                      renderItem={({item}) => ( 
-                        <Pressable 
+      <Text style={styles.flap}>Add a LifeStyle</Text>
+      <FlatList 
+                data={lifestyleList}
+                numColumns={1}
+                keyExtractor={(item) => "manageHabits" + item.name}
+                renderItem={({item}) => ( 
+                  
+                  <View style={styles.item}>
+                  <View style={{flexDirection:'row', justifyContent:'center', alignContent:'center', alignItems:'center'}}>
+                    <Text adjustsFontSizeToFit style={[styles.text, {width:'40%',marginRight:5}]}>{item.name}</Text>
+                      <FlatList
+                        data={item.habitos}
+                        style = {{flexDirection: 'column', width:'40%', flexWrap:'wrap'}}
+                        renderItem={({item}) => <Text key={item.name} style={{marginBottom:2}}>- {item.name}</Text>}
+                        keyExtractor={item => "ManageHabit 2" + item.name}
+                      />
+                      <Pressable 
                         onPress={() => {
                           const nombres = habits.map((habito) => habito.name);
                           let no_agregados = "";
@@ -98,27 +106,14 @@ const ManageHabits = ({ navigation }) => {
                               alert("Lifestyle agregado, los siguientes hábitos ya existian: " + no_agregados.substring(0,no_agregados.length - 2));
                             }else{
                               alert("Lifestyle '" + item.name + "' agregado correctamente!" )
-                           }
+                          }
                           store.dispatch({ type: 'UPDATE'}); //Updeteo con redux el home para que aparezcan los habitos
                         }}
-                        onLongPress={() => {
-                            console.log("Agregar lifestyle: ", item);
-                        }} 
-                        >
-                        <View style={styles.item}>
-                        <View style={{flexDirection:'row'}}>
-                          <Text adjustsFontSizeToFit style={[styles.text, {width:'45%'}]}>{item.name}</Text>
-                            <FlatList
-                              data={item.habitos}
-                              style = {{flexDirection: 'column', width:'55%', flexWrap:'wrap'}}
-                              renderItem={({item}) => <Text key={item.name} style={{marginBottom:2}}>- {item.name}</Text>}
-                              keyExtractor={item => "ManageHabit 2" + item.name}
-                            />
-                        </View>
-                        </View>
-                        </Pressable>
-                      )}
-            />
+                      >
+                        <Icon.Plus  stroke="black" width={40} height={40} strokeWidth={1} style={{flex:1,alignSelf:'center',flex:1,width:'5%'}}/>
+                      </Pressable>
+                    </View>
+                </View>)}/>
         </Animated.View>
         </MainWindow>
         <BottomMenu navigation={navigation} habits={habits}/>
@@ -160,9 +155,10 @@ const styles = StyleSheet.create({
     backgroundColor:'#343635'
   },
   text: {
-    paddingLeft: 20,
+    paddingLeft: 10,
     width: '100%',
     fontWeight: 'bold',
+    alignSelf:'center'
     },
     modalText: {
       padding: 20,

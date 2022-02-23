@@ -42,7 +42,6 @@ const GoalCard = ({habit}) => {
           habito.last_mod =  dia_anterior; //set yesterdays date
           habito.strikeCount = 0;
       });
-      console.log("HAIBTO: " + habit.name + "PERDIO LA RACHA")
     }    
 
     return(

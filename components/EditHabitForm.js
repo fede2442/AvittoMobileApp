@@ -1,5 +1,5 @@
-import React, {useState} from 'react';
-import {StyleSheet,  View, TextInput, Button, TouchableOpacity, Text, FlatList, ScrollView, Keyboard } from 'react-native';
+import React, {useState, useEffect} from 'react';
+import {StyleSheet,  View, TextInput, Button, TouchableOpacity, Text, FlatList } from 'react-native';
 import {Formik} from 'formik';
 import realm from '../realm/realm';
 import DiaCheckbox from './DiaCheckbox';
@@ -29,11 +29,10 @@ const EditHabitForm = ({ close, nombre, icono, diasHab }) => {
             <Formik
                 initialValues={{ nombre: nombre, icono: icono, dias: JSON.parse(JSON.stringify(diasHab)) }}
                 onSubmit={(values) => {
-                    console.log("nombre = "+ values.nombre)
                     const habito = realm.objects("Habit").filtered("name == '"+ nombre +"'")[0];
                     realm.write(() => {
                         habito.name =  values?.nombre;
-                        habito.habitIcon = values?.icono;
+                        habito.habitIcon = selectedIcon;
                         habito.dias =  values?.dias;
                     });
                     store.dispatch({ type: 'UPDATE'});
@@ -43,9 +42,6 @@ const EditHabitForm = ({ close, nombre, icono, diasHab }) => {
             >
             {(props) => (
                 <View >
-                <ScrollView contentContainerStyle={{flexGrow: 1}}
-                    keyboardShouldPersistTaps='handled'
-                    >
                     <TextInput
                         style={styles.textInput}
                         placeholder='Nombre del Habito'
@@ -76,7 +72,6 @@ const EditHabitForm = ({ close, nombre, icono, diasHab }) => {
                     })}
                         
                     <Button title='submit' onPress={props.handleSubmit}/>
-                    </ScrollView>
                 </View>
             )}
             </Formik>

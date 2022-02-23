@@ -16,7 +16,6 @@ const EditDelete = ({ navigation }) => {
   const [habitos, setHabitos] = useState([]);
   const [update, setUpdate] = useState(false);
 
-
   store.subscribe(()=>  setUpdate(store.getState().update))
 
   useEffect(() => {
@@ -28,7 +27,6 @@ const EditDelete = ({ navigation }) => {
     await realm.write(() => {
       realm.delete(habito_delete)
     });
-    console.log("ELIMINANDO: " + habit.name);
     store.dispatch({ type: 'UPDATE'});
   }
 

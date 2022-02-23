@@ -46,7 +46,6 @@ const Habit = ({habit}) => {
                         });
                         jump();
                     }
-                    console.log(habito);
                     }}
                 onLongPress={() => {
                     if(buttonPresses > 0){
@@ -57,7 +56,6 @@ const Habit = ({habit}) => {
                             habito.strikeCount = habito.strikeCount == 0 ? 0 : habito.strikeCount - 1;
                             habito.strikeHistoricMax = habito.strikeHistoricMax == 0 ? 0 : habito.strikeHistoricMax - 1;
                         });
-                        console.log(habito);
                         setButtonPresses(0);
                     }
                 }} 

@@ -37,21 +37,12 @@ const Home = ({ navigation }) => {
     setHabitos(realm.objects("Habit").filtered(`dias["${dia_str}"] == true`));
   }, [update]);
 
-  function delete_all(){
-    realm.write(() => {
-      realm.deleteAll();
-    });
-    setUpdate(!update);
-  }
-
   let pan = new Animated.ValueXY();
   let _val = { x:0,y:0};
   pan.addListener((value) => _val = value);
   let panResponder = PanResponder.create({
       onStartShouldSetPanResponder: (e, gesture) => true,
       onPanResponderRelease: (e,gesture) => {
-          console.log(gesture)
-
           if(Math.abs(gesture.dx) > Math.abs(gesture.dy)){
             if(Math.abs(gesture.dx) > 50){
               if(gesture.dx > 0 ){

@@ -54,6 +54,9 @@ function icons(source) {
         case 'codePen': return <Icon.Codepen stroke="black" width={width_height} height={width_height} strokeWidth={strokeWidth}/>;
         case 'smile': return <Icon.Smile stroke="black" width={width_height} height={width_height} strokeWidth={strokeWidth}/>;
         case 'edit': return <Icon.Edit stroke="black" width={width_height} height={width_height} strokeWidth={strokeWidth}/>;
+        case 'video': return <Icon.Video stroke="black" width={width_height} height={width_height} strokeWidth={strokeWidth}/>;
+        case 'search': return <Icon.Search stroke="black" width={width_height} height={width_height} strokeWidth={strokeWidth}/>;
+        case 'editar2': return <Icon.Edit2 stroke="black" width={width_height} height={width_height} strokeWidth={strokeWidth}/>;
         default : return false;
     }
 }

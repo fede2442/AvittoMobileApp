@@ -34,10 +34,8 @@ const Habit = ({habit}) => {
     const habito = habitos.filtered("name == '"+habit.name+"'")[0];
 
     return(
-
         <Pressable 
                 onPress={() => {
-                
                     if(buttonPresses == 0){
                         realm.write(() => {
                             habito.last_mod = new Date();

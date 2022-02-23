@@ -68,6 +68,19 @@ lifestyles = [
                 strikeHistoricMax: 0,
                 habitIcon: 'smile',
                 dias:  {lunes: true, martes: true, miercoles: true, jueves: true, viernes: true, sabado: true, domingo: true}}]
+    }, {name: 'Editor de Videos',
+    habitos: [{ name: "Editar 40 Min",
+                last_mod: new Date(),
+                strikeCount: 0,
+                strikeHistoricMax: 0,
+                habitIcon: 'editar2',
+                dias:  {lunes: true, martes: true, miercoles: true, jueves: true, viernes: true, sabado: true, domingo: true}},
+                { name: "Buscar Samples",
+                last_mod: new Date(),
+                strikeCount: 0,
+                strikeHistoricMax: 0,
+                habitIcon: 'search',
+                dias:  {lunes: true, martes: true, miercoles: true, jueves: true, viernes: true, sabado: true, domingo: true}}]
     }]
 
 

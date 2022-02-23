@@ -1,6 +1,6 @@
 import 'react-native-gesture-handler';
 import React  from 'react';
-import {View, StyleSheet, Text, FlatList} from 'react-native';
+import {View, StyleSheet, Text, FlatList, Animated, PanResponder} from 'react-native';
 import MainButtonHome from '../components/MainButtonHome';
 import BottomMenu from '../components/BottomMenu';
 import MainWindow from '../components/MainWindow';
@@ -16,11 +16,27 @@ const Goals = ({ navigation }) => {
   
   let habitos2 = habitos.sorted( 'strikeCount' , true);
 
+  let pan = new Animated.ValueXY();
+  let _val = { x:0,y:0};
+  pan.addListener((value) => _val = value);
+  let panResponder = PanResponder.create({
+      onStartShouldSetPanResponder: (e, gesture) => true,
+      onPanResponderRelease: (e,gesture) => {
+          console.log(gesture)
+          if(Math.abs(gesture.dx) > 50){
+            if(gesture.dx > 0 ){
+              navigation.navigate('Home')
+            }
+          }
+      }
+  });
+
   return (
     <NavigationContainer>
         <View style={styles.container}>
         <Header navigation={navigation}/>
         <MainWindow >
+        <Animated.View style= {{flex:1}}{...panResponder.panHandlers}>
           <FlatList 
                       ListHeaderComponent={
                       <>
@@ -31,8 +47,9 @@ const Goals = ({ navigation }) => {
                       renderItem={({item}) => ( 
                         <GoalCard habit={item}/>
                       )}
-                      keyExtractor={(item, index) => index.toString()}
+                      keyExtractor={(item) => "goals" + item.name}
                       />
+        </Animated.View>
         </MainWindow>
         <BottomMenu navigation={navigation}/>
         <MainButtonHome navigation={navigation}/>

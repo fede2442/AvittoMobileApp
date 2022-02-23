@@ -1,6 +1,5 @@
 import React from 'react';
 import {View, StyleSheet, ImageBackground, ScrollView} from 'react-native';
-import Header from '../components/Header'
 
 const MainWindow = (props) => {
     

@@ -59,7 +59,7 @@ const GoalCard = ({habit}) => {
           </View>
           <View style={{justifyContent:'flex-end',alignContent:'flex-end'}}>
           {(habit.strikeCount === habit.strikeHistoricMax) && (habit.strikeHistoricMax != 0) ? 
-          <Icon.ChevronsUp stroke="#2ECC71" width={60} height={60} strokeWidth={1.2} style={{}}/>
+          <Icon.ChevronsUp stroke="#2ECC71" width={60} height={60} strokeWidth={1.2} style={{flex:1}}/>
           : <Text></Text>
           }
           </View>

@@ -1,6 +1,6 @@
 import 'react-native-gesture-handler';
 import React, {useState, useEffect} from 'react';
-import {View, StyleSheet, FlatList, Text, Modal } from 'react-native';
+import {View, StyleSheet, FlatList, Animated, Text, Modal, PanResponder } from 'react-native';
 import MainButton from '../components/MainButton';
 import BottomMenu from '../components/BottomMenu';
 import MainWindow from '../components/MainWindow';
@@ -37,17 +37,42 @@ const Home = ({ navigation }) => {
     setHabitos(realm.objects("Habit").filtered(`dias["${dia_str}"] == true`));
   }, [update]);
 
-
-
   function delete_all(){
     realm.write(() => {
       realm.deleteAll();
     });
     setUpdate(!update);
   }
+
+  let pan = new Animated.ValueXY();
+  let _val = { x:0,y:0};
+  pan.addListener((value) => _val = value);
+  let panResponder = PanResponder.create({
+      onStartShouldSetPanResponder: (e, gesture) => true,
+      onPanResponderRelease: (e,gesture) => {
+          console.log(gesture)
+
+          if(Math.abs(gesture.dx) > Math.abs(gesture.dy)){
+            if(Math.abs(gesture.dx) > 50){
+              if(gesture.dx > 0 ){
+                navigation.navigate('ManageHabits')
+              }else{
+                navigation.navigate('Goals')
+              }
+            } 
+          }else{
+            if(Math.abs(gesture.dy) > 50){
+              if(gesture.dy > 0 ){
+                navigation.navigate('EditDelete')
+              }
+            }
+          }
+      }
+  });
+
+
   return (
     <NavigationContainer>
-
       <Modal animationType="fade" visible={modalOpen} transparent={true}  onRequestClose={() => {
                       setModalOpen(false);}}>
           <View style={styles.modalView}>
@@ -56,22 +81,22 @@ const Home = ({ navigation }) => {
               <AddHabitForm close={setModal}/>
           </View>
       </Modal>
-      <TouchableOpacity onPress={() => delete_all()}  activeOpacity={0.7} style={{backgroundColor:'red'}}>
-        <View style={{alignContent:'center',alignSelf:'center',height:20,width:300,backgroundColor:'red'}}>
-          <Text>BORRAR TODO</Text>
-        </View>
-      </TouchableOpacity>
       <View style={styles.container}>
         <Header navigation={navigation}/>
         <MainWindow>
+          <Animated.View style= {{flex:1}}{...panResponder.panHandlers}>
+
           <FlatList 
                       data={habitos}
                       numColumns={3}
+                      keyExtractor={(item) => "home" + item.name}
                       renderItem={({item}) => ( 
                         <Habit habit={item}/>
                       )}
                       style={{padding:10}}
                       />
+          </Animated.View>
+
         </MainWindow>
         <BottomMenu navigation={navigation} />
         <MainButton onPress={setModalOpen}/>

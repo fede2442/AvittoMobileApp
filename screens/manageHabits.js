@@ -1,16 +1,12 @@
 import 'react-native-gesture-handler';
 import React , { useState, useEffect }from 'react';
-import {View, StyleSheet, Text, FlatList, ImageBackground, Pressable, Modal, Button} from 'react-native';
+import {View, StyleSheet, Text, FlatList, PanResponder, Animated, Pressable, Modal, Button} from 'react-native';
 import MainButtonHome from '../components/MainButtonHome';
 import BottomMenu from '../components/BottomMenu';
 import MainWindow from '../components/MainWindow';
 import { NavigationContainer } from '@react-navigation/native';
-import Images from '../components/Images';
-import { useDispatch, useSelector } from 'react-redux';
-import { quitar_habito_action } from '../redux/reducers/notesApp';
 import realm from '../realm/realm';
 import store from '../redux/store';
-import DeleteEditCard from '../components/DeleteEditCard';
 import Header from '../components/Header'
 
 const ManageHabits = ({ navigation }) => {
@@ -34,6 +30,21 @@ const ManageHabits = ({ navigation }) => {
     console.log(lifestyleList)
   }, []);
 
+  let pan = new Animated.ValueXY();
+  let _val = { x:0,y:0};
+  pan.addListener((value) => _val = value);
+  let panResponder = PanResponder.create({
+      onStartShouldSetPanResponder: (e, gesture) => true,
+      onPanResponderRelease: (e,gesture) => {
+          console.log(gesture)
+          if(Math.abs(gesture.dx) > 50){
+            if(gesture.dx < 0 ){
+              navigation.navigate('Home')
+            }
+          }
+      }
+  });
+
   return (
       <NavigationContainer>
         <Modal animationType="fade" visible={modalOpen} transparent={true}  onRequestClose={() => {
@@ -54,12 +65,14 @@ const ManageHabits = ({ navigation }) => {
 
         <View style={styles.container}>
         <Header navigation={navigation}/>
-        <MainWindow backgroundImage={Images.rickBackground2i}>
+        <MainWindow >
+        <Animated.View style= {{flex:1}}{...panResponder.panHandlers}>
+
             <Text style={styles.flap}>Add a LifeStyle</Text>
             <FlatList 
                       data={lifestyleList}
                       numColumns={1}
-                      keyExtractor={(item, index) => item.name.toString()}
+                      keyExtractor={(item) => "manageHabits" + item.name}
                       renderItem={({item}) => ( 
                         <Pressable 
                         onPress={() => {
@@ -99,13 +112,14 @@ const ManageHabits = ({ navigation }) => {
                               data={item.habitos}
                               style = {{flexDirection: 'column', width:'55%', flexWrap:'wrap'}}
                               renderItem={({item}) => <Text key={item.name} style={{marginBottom:2}}>- {item.name}</Text>}
-                              keyExtractor={item => item.name}
+                              keyExtractor={item => "ManageHabit 2" + item.name}
                             />
                         </View>
                         </View>
                         </Pressable>
                       )}
             />
+        </Animated.View>
         </MainWindow>
         <BottomMenu navigation={navigation} habits={habits}/>
         <MainButtonHome navigation={navigation}/>

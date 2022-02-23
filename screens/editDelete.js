@@ -1,5 +1,5 @@
 import 'react-native-gesture-handler';
-import React  from 'react';
+import React, {useState, useEffect}  from 'react';
 import {View, StyleSheet, Text, FlatList, Pressable} from 'react-native';
 import MainButtonHome from '../components/MainButtonHome';
 import BottomMenu from '../components/BottomMenu';
@@ -9,9 +9,28 @@ import realm from '../realm/realm';
 import GoalCard from '../components/GoalCard';
 import Header from '../components/Header'
 import DeleteEditCard from '../components/DeleteEditCard'
+import store from '../redux/store';
+
 const EditDelete = ({ navigation }) => {
 
-  const habitos = realm.objects("Habit");
+  const [habitos, setHabitos] = useState([]);
+  const [update, setUpdate] = useState(false);
+
+
+  store.subscribe(()=>  setUpdate(store.getState().update))
+
+  useEffect(() => {
+    setHabitos(realm.objects("Habit"))
+  }, [update]);
+
+  async function eliminar(habit) {
+    const habito_delete = realm.objects("Habit").filtered("name == '"+habit.name+"'")[0];
+    await realm.write(() => {
+      realm.delete(habito_delete)
+    });
+    console.log("ELIMINANDO: " + habit.name);
+    store.dispatch({ type: 'UPDATE'});
+  }
 
   return (
     <NavigationContainer>
@@ -26,8 +45,9 @@ const EditDelete = ({ navigation }) => {
                       data={habitos}
                       numColumns={1}
                       style={{marginBottom:10}}
+                      keyExtractor={(item) => "EditDelete" + item.name}
                       renderItem={({item}) => ( 
-                          <DeleteEditCard habit={item}/>
+                          <DeleteEditCard habit={JSON.parse(JSON.stringify(item))} deleteFunc={eliminar}/>
                       )}
             />
         </MainWindow>
